@@ -1,0 +1,13 @@
+.supermaven/
+atuin/
+configstore/
+flutter/
+github-copilot/
+gtk-2.0/
+jgit/
+karabiner/
+raycast/
+tmux/
+xm1/
+]
+bash-env.nu
