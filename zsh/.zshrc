@@ -72,8 +72,8 @@ start_zellij() {
 }
 
 # alias
-alias zj=start_zellij
-alias zi='zellij a --index 0'
+alias ze=start_zellij
+alias zj='zellij a --index 0'
 
 #plugins
 plugins=(
