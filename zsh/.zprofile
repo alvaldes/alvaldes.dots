@@ -26,8 +26,9 @@ alias gpush="git push"
 alias py="python3"
 alias pip="pip3"
 
-# cmatrix
+# extras
 alias matrix="cmatrix -a -b -C cyan"
+alias '?'="neofetch --ascii ~/.config/neofetch/ascii.txt"
 
 # AUTOCOMPLETION
 # initialize autocompletion
