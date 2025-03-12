@@ -8,8 +8,8 @@
 vim.keymap.set("n", "x", '"_x', { noremap = true, silent = true })
 
 -- Position cursor at the middle of the screen after scrolling half page
--- vim.keymap.set("n", "<C-d>", "<C-d>zz") -- Scroll down half a page and center the cursor
--- vim.keymap.set("n", "<C-u>", "<C-u>zz") -- Scroll up half a page and center the cursor
+vim.keymap.set("n", "<C-d>", "<C-d>zz") -- Scroll down half a page and center the cursor
+vim.keymap.set("n", "<C-u>", "<C-u>zz") -- Scroll up half a page and center the cursor
 
 -- Position cursor at the middle of the screen after moving
 -- vim.keymap.set("n", "j", "jzz") -- Move cursor down and center the screen
@@ -84,6 +84,12 @@ vim.keymap.set(
 )
 
 ----- mark -----
+-- To add a mark (localy), press `m` followed by a letter (a-z)
+-- To add a mark (that persist when chage of files), press `m` followed by a letter (A-Z)
+-- To go to a mark, press `'` followed by the letter of the mark
+-- To see all marks press <leader>sm
+-- To delete a mark press <leader>dm
+
 -- Función para eliminar una marca específica
 local function delete_mark(mark)
   vim.cmd("delmark " .. mark)
@@ -93,7 +99,7 @@ end
 vim.keymap.set("n", "<leader>dm", function()
   local mark = vim.fn.input("Enter mark to delete: ")
   delete_mark(mark)
-end, { noremap = true, silent = true })
+end, { noremap = true, silent = true, desc = "Delete mark" })
 
 ----- HARPOON 2 -----
 vim.keymap.set("n", "<leader>M", function()
