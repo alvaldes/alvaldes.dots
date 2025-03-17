@@ -46,6 +46,10 @@ keymap.set("v", "K", ":move '<-2<CR>gv=gv", { desc = "Move line up in visual mod
 -- When you do joins with J it will keep your cursor at the beginning instead of at the end
 keymap.set("n", "J", "mzJ`z")
 
+----- BufferLine -----
+keymap.set("n", "<TAB>", "<CMD>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+keymap.set("n", "<S-TAB>", "<CMD>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
+
 ----- Tmux Navigation ------
 local nvim_tmux_nav = require("nvim-tmux-navigation")
 -- Jump to previous definition and center the cursor
