@@ -9,6 +9,8 @@ selection-background = #3B4252
 selection-foreground = #C9C7CD
 cursor-color = #92A2D5
 cursor-text = #161617
+cursor-style = block
+cursor-style-blink = true
 
 palette = 0=#000000
 palette = 1=#EA83A5
