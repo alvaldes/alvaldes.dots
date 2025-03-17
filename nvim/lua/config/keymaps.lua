@@ -47,8 +47,8 @@ keymap.set("v", "K", ":move '<-2<CR>gv=gv", { desc = "Move line up in visual mod
 keymap.set("n", "J", "mzJ`z")
 
 ----- BufferLine -----
-keymap.set("n", "<TAB>", "<CMD>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-keymap.set("n", "<S-TAB>", "<CMD>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
+-- keymap.set("n", "<TAB>", "<CMD>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+-- keymap.set("n", "<S-TAB>", "<CMD>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 
 ----- Tmux Navigation ------
 local nvim_tmux_nav = require("nvim-tmux-navigation")
