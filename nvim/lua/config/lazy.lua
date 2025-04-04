@@ -1,5 +1,9 @@
 -- This file contains the configuration for setting up the lazy.nvim plugin manager in Neovim.
 
+-- Spell-checking
+vim.opt.spell = true -- activa spell checker
+vim.opt.spelllang = { "en" }
+
 -- Define the path to the lazy.nvim plugin
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
@@ -55,6 +59,7 @@ require("lazy").setup({
 
     -- Coding plugins
     { import = "lazyvim.plugins.extras.coding.mini-surround" },
+    { import = "lazyvim.plugins.extras.editor.mini-diff" },
 
     -- Utility plugins
     { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
