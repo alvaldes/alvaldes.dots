@@ -30,12 +30,12 @@ palette = 13=#92A2D5
 palette = 14=#85B5BA
 palette = 15=#C9C7CD
 
-font-family = IosevkaTerm NF
-font-size = 16
+font-family = IosevkaTerm Nerd Font
+font-size = 18
 window-padding-color = extend
 window-step-resize = true
 window-padding-balance = true
-quick-terminal-position = center
+quick-terminal-position = "top"
 
 title = " "
 macos-titlebar-style = tabs

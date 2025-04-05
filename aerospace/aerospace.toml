@@ -42,8 +42,8 @@ key-mapping.preset = 'qwerty'
 # Drop it from your config, if you don't like this behavior
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-on-focus-changed = "move-mouse window-lazy-center"
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+# on-focus-changed = "move-mouse window-lazy-center"
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
@@ -230,7 +230,7 @@ run = 'move-node-to-workspace 1-social'
 if.app-id = 'com.readdle.SparkDesktop-setapp'
 run = [
   'layout floating',
-  'move-node-to-workspace 1-social'k
+  'move-node-to-workspace 1-social',
 ]
 
 [[on-window-detected]]
