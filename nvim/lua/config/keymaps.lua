@@ -51,14 +51,14 @@ keymap.set("n", "J", "mzJ`z")
 -- keymap.set("n", "<S-TAB>", "<CMD>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 
 ----- Tmux Navigation ------
-local nvim_tmux_nav = require("nvim-tmux-navigation")
+-- local nvim_tmux_nav = require("nvim-tmux-navigation")
 -- Jump to previous definition and center the cursor
-keymap.set("n", "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft) -- Navigate to the left pane
-keymap.set("n", "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown) -- Navigate to the bottom pane
-keymap.set("n", "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp) -- Navigate to the top pane
-keymap.set("n", "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight) -- Navigate to the right pane
-keymap.set("n", "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive) -- Navigate to the last active pane
-keymap.set("n", "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext) -- Navigate to the next pane
+-- keymap.set("n", "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft) -- Navigate to the left pane
+-- keymap.set("n", "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown) -- Navigate to the bottom pane
+-- keymap.set("n", "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp) -- Navigate to the top pane
+-- keymap.set("n", "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight) -- Navigate to the right pane
+-- keymap.set("n", "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive) -- Navigate to the last active pane
+-- keymap.set("n", "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext) -- Navigate to the next pane
 
 -- REQUIRED
 local harpoon = require("harpoon")
@@ -79,7 +79,7 @@ keymap.set(
   { desc = "Obsidian Check Checkbox" }
 )
 keymap.set("n", "<leader>ot", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Obsidian Template" })
-keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open in Obsidian App" })
+keymap.set("n", "<leader>oo", "<cmd>Obsidian Open<CR>", { desc = "Open in Obsidian App" })
 keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
 keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" })
 keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create New Note" })
@@ -128,21 +128,21 @@ keymap.set("n", "<C-e>", function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
 
-keymap.set("n", "<C-H>", function()
-  harpoon:list():select(1)
-end)
-
-keymap.set("n", "<C-J>", function()
-  harpoon:list():select(2)
-end)
-
-keymap.set("n", "<C-K>", function()
-  harpoon:list():select(3)
-end)
-
-keymap.set("n", "<C-L>", function()
-  harpoon:list():select(4)
-end)
+-- keymap.set("n", "<C-H>", function()
+--   harpoon:list():select(1)
+-- end)
+--
+-- keymap.set("n", "<C-J>", function()
+--   harpoon:list():select(2)
+-- end)
+--
+-- keymap.set("n", "<C-K>", function()
+--   harpoon:list():select(3)
+-- end)
+--
+-- keymap.set("n", "<C-L>", function()
+--   harpoon:list():select(4)
+-- end)
 
 -- Disable key mappings in insert mode
 vim.api.nvim_set_keymap("i", "<A-j>", "<Nop>", { noremap = true, silent = true })
@@ -212,19 +212,14 @@ wk.add({
   },
 })
 
--- Open the current markdown file in the browser
-keymap.set("n", "<leader>mo", function()
+-- Open the current file in the browser
+keymap.set("n", "<leader>fo", function()
   local file = vim.fn.expand("%:p") -- Obtener ruta absoluta del archivo actual
 
-  if not file:match("%.md$") then
-    print("Not a Markdown file")
-    return
-  end
-
   local cmd
-  cmd = "open -a 'arc' " .. vim.fn.shellescape(file)
+  cmd = "open -a 'zen' " .. vim.fn.shellescape(file)
   os.execute(cmd)
-end, { desc = "Open current Markdown file in browser", silent = true })
+end, { desc = "Open current file in browser", silent = true })
 
 -- Toggle bullet point at the beginning of the current line in normal mode
 -- If in a multiline paragraph, make sure the cursor is on the line at the top

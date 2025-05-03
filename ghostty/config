@@ -63,10 +63,10 @@ keybind = ctrl+shift+h=resize_split:left,18
 keybind = ctrl+shift+l=resize_split:right,10
 
 # Navigation
-keybind = alt+k=goto_split:up
-keybind = alt+j=goto_split:down
-keybind = alt+h=goto_split:left
-keybind = alt+l=goto_split:right
+keybind = ctrl+k=goto_split:up
+keybind = ctrl+j=goto_split:down
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+l=goto_split:right
 
 # Miscellaneous
 keybind = cmd+k=clear_screen
