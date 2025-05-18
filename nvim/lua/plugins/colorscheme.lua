@@ -29,7 +29,7 @@ return {
             "CursorLineNr",
             "EndOfBuffer",
           },
-          exclude = {}, -- table: groups you don't want to clear
+          exclude_groups = {}, -- table: groups you don't want to clear
         })
         vim.cmd("TransparentEnable") -- execute the command to enable transparency
       end,

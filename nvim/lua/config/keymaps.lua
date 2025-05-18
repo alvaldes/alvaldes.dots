@@ -8,11 +8,6 @@ local keymap = vim.keymap
 
 -- Do things without affecting the registers
 keymap.set("n", "x", '"_x')
-keymap.set("n", "<Leader>P", '"0P')
-keymap.set("n", "<Leader>C", '"_C')
-keymap.set("v", "<Leader>C", '"_C')
-keymap.set("n", "<Leader>D", '"_D')
-keymap.set("v", "<Leader>D", '"_D')
 
 -- Increment/decrement
 keymap.set("n", "+", "<C-a>")
