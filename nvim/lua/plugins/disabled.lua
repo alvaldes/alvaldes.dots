@@ -16,12 +16,13 @@ return {
     enabled = false,
   },
   {
+    -- For free enabled = true and set to false every other copilot plugin
     "CopilotC-Nvim/CopilotChat.nvim",
-    enabled = true,
+    enabled = false,
   },
   {
-    "sudo-tree/opencode.nvim",
-    enabled = false,
+    "NickvanDyke/opencode.nvim",
+    enabled = true,
   },
   {
     "olimorris/codecompanion.nvim",
@@ -31,11 +32,16 @@ return {
     "tris203/precognition.nvim",
     enabled = false,
   },
+
+  {
+    "sphamba/smear-cursor.nvim",
+    enabled = false,
+  },
   {
     -- Plugin: claude-code.nvim
     -- URL: https://github.com/greggh/claude-code.nvim
     -- Description: Neovim integration for Claude Code AI assistant
-    "greggh/claude-code.nvim",
+    "coder/claudecode.nvim",
     enabled = false,
   },
   {
