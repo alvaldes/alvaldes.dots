@@ -229,7 +229,7 @@ run = 'move-node-to-workspace 1-social'
 [[on-window-detected]]
 if.app-id = 'com.readdle.SparkDesktop-setapp'
 run = [
-  'layout floating',
+  #  'layout floating',
   'move-node-to-workspace 1-social',
 ]
 
