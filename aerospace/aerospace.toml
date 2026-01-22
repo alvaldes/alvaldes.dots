@@ -115,15 +115,15 @@ alt-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1-social'
-alt-2 = 'workspace 2-work'
+alt-2 = 'workspace 2-browser'
 alt-3 = 'workspace 3-dev'
-alt-4 = 'workspace 4-spotify'
-alt-5 = 'workspace 5-others'
+alt-4 = 'workspace 4-music'
+alt-5 = 'workspace 5-email'
 # alt-6 = 'workspace 6'
 # alt-7 = 'workspace 7'
-alt-8 = 'workspace 8'
-alt-9 = 'workspace 9'
-alt-0 = 'workspace 0-tesis'
+alt-8 = 'workspace 8-others'
+alt-9 = 'workspace 9-AI'
+alt-0 = 'workspace 0-work'
 # alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
 # alt-b = 'workspace B'
 # alt-c = 'workspace C'
@@ -149,15 +149,15 @@ alt-0 = 'workspace 0-tesis'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1-social'  
-alt-shift-2 = 'move-node-to-workspace 2-work'    
+alt-shift-2 = 'move-node-to-workspace 2-browser'    
 alt-shift-3 = 'move-node-to-workspace 3-dev'     
-alt-shift-4 = 'move-node-to-workspace 4-spotify' 
-alt-shift-5 = 'move-node-to-workspace 5-others'  
+alt-shift-4 = 'move-node-to-workspace 4-music' 
+alt-shift-5 = 'move-node-to-workspace 5-email'  
 # alt-shift-6 = 'move-node-to-workspace 6'
 # alt-shift-7 = 'move-node-to-workspace 7'
-alt-shift-8 = 'move-node-to-workspace 8'
-alt-shift-9 = 'move-node-to-workspace 9'
-alt-shift-0 = 'move-node-to-workspace 0-tesis'
+alt-shift-8 = 'move-node-to-workspace 8-others'
+alt-shift-9 = 'move-node-to-workspace 9-AI'
+alt-shift-0 = 'move-node-to-workspace 0-work'
 # alt-shift-a = 'move-node-to-workspace A'
 # alt-shift-b = 'move-node-to-workspace B'
 # alt-shift-c = 'move-node-to-workspace C'
@@ -222,6 +222,8 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# $ aerosapce list-apps
+
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'move-node-to-workspace 1-social'
@@ -230,7 +232,7 @@ run = 'move-node-to-workspace 1-social'
 if.app-id = 'com.readdle.SparkDesktop-setapp'
 run = [
   #  'layout floating',
-  'move-node-to-workspace 1-social',
+  'move-node-to-workspace 5-email'
 ]
 
 [[on-window-detected]]
@@ -239,23 +241,35 @@ run = 'move-node-to-workspace 1-social'
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
-run = 'move-node-to-workspace 2-work'
+run = 'move-node-to-workspace 2-browser'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 2-browser'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 3-dev'
 
 [[on-window-detected]]
-if.app-id = 'com.spotify.client'
-run = 'move-node-to-workspace 4-spotify'
+if.app-id = 'com.music.client'
+run = 'move-node-to-workspace 4-music'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = 'move-node-to-workspace 4-music'
 
 [[on-window-detected]]
 if.app-id = 'com.colliderli.iina'
-run = 'move-node-to-workspace 8'
+run = 'move-node-to-workspace 8-others'
 
 [[on-window-detected]]
 if.app-id = 'com.openai.chat'
-run = 'move-node-to-workspace 9'
+run = 'move-node-to-workspace 9-AI'
+
+[[on-window-detected]]
+if.app-id = 'com.electron.ollama'
+run = 'move-node-to-workspace 9-AI'
 
 
 
