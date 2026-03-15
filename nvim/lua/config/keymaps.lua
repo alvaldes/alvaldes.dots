@@ -67,23 +67,14 @@ keymap.set("n", "<leader>tk", "<cmd>VimtexStop<CR>", { desc = "Stop LaTeX compil
 keymap.set("n", "<leader>q", ":!zathura <C-r ≥ expand ('%:r') <cr> - pdf &<cr>", { desc = "Open Zathura" })
 
 ----- OBSIDIAN -----
-keymap.set(
-  "n",
-  "<leader>oc",
-  "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
-  { desc = "Obsidian Check Checkbox" }
-)
-keymap.set("n", "<leader>ot", "<cmd>ObsidianTemplate<CR>", { desc = "Insert Obsidian Template" })
-keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open in Obsidian App" })
-keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "Show ObsidianBacklinks" })
-keymap.set("n", "<leader>ol", "<cmd>ObsidianLinks<CR>", { desc = "Show ObsidianLinks" })
-keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create New Note" })
-keymap.set("n", "<leader>odl", "<cmd>ObsidianDailies<CR>", { desc = "List Dailies" })
-keymap.set("n", "<leader>odt", "<cmd>ObsidianToday<CR>", { desc = "Create/Open Today Daily Note" })
-keymap.set("n", "<leader>odm", "<cmd>ObsidianTomorrow<CR>", { desc = "Create/Open Tomorrow Daily Note" })
-keymap.set("n", "<leader>ody", "<cmd>ObsidianYesterday<CR>", { desc = "Create/Open Yesterday Daily Note" })
-keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Obsidian" })
-keymap.set("n", "<leader>oq", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick Switch" })
+vim.keymap.set("n", "<leader>oc", "<cmd>Obsidian check<CR>", { desc = "Obsidian Check Checkbox" })
+vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian template<CR>", { desc = "Insert Obsidian Template" })
+vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open in Obsidian App" })
+vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Show Obsidian Backlinks" })
+vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian links<CR>", { desc = "Show Obsidian Links" })
+vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create New Note" })
+vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search Obsidian" })
+vim.keymap.set("n", "<leader>oq", "<cmd>Obsidian quick-switch<CR>", { desc = "Quick Switch" })
 
 -----  OIL -----
 keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
