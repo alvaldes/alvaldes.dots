@@ -93,11 +93,11 @@ outer.right =      5
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-h = 'focus left'
+# # See: https://nikitabobko.github.io/AeroSpace/commands#focus
+alt-h = 'focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
 alt-j = 'focus down'
 alt-k = 'focus up'
-alt-l = 'focus right'
+alt-l = 'focus right --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'

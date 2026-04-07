@@ -47,7 +47,7 @@ quick-terminal-position = "top"
 
 title = " "
 macos-titlebar-style = tabs
-macos-icon = chalkboard
+macos-icon = xray
 
 ### Mac Alt Fix
 macos-option-as-alt = left

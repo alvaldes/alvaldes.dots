@@ -28,6 +28,10 @@ return {
     enabled = false,
   },
   {
+    "zbirenbaum/copilot.lua",
+    enabled = false,
+  },
+  {
     "NickvanDyke/opencode.nvim",
     enabled = true,
   },
