@@ -257,5 +257,22 @@
       "*.env.*": "deny"
     }
   },
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (proxmox)",
+      "options": {
+        "baseURL": "http://100.101.245.76:11434/v1"
+      },
+      "models": {
+        "qwen2.5-coder:32b": {
+          "name": "qwen2.5-coder:32b"
+        },
+        "gemma4:latest": {
+          "name": "gemma4:latest"
+        }
+      }
+    }
+  },
   "plugin": ["opencode-gemini-auth@latest"]
 }
