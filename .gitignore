@@ -13,3 +13,5 @@ tmux/
 xm1/
 ]
 bash-env.nu
+# Local Pi runtime state
+.atl/
