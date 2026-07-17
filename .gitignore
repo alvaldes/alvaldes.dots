@@ -15,3 +15,11 @@ xm1/
 bash-env.nu
 # Local Pi runtime state
 .atl/
+
+# Local agent/trainer runtime state
+cagent/
+gentleman-trainer/
+
+# Herdr runtime state (not the tracked config.toml)
+herdr/*.log
+herdr/session.json
