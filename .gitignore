@@ -23,3 +23,18 @@ gentleman-trainer/
 # Herdr runtime state (not the tracked config.toml)
 herdr/*.log
 herdr/session.json
+
+# AI plugin runtime state
+.supermaven/
+
+# Empty placeholder dirs from other tooling
+GentlemanClaude/
+GentlemanTmux/
+
+# Codexbar secrets (plaintext tokens)
+codexbar/
+
+# herdr runtime artifacts (auto-generated / downloaded)
+herdr/plugins.json
+herdr/plugins/
+herdr/release-notes.json
