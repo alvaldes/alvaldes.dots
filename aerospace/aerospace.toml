@@ -12,7 +12,18 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+after-startup-command = [
+  "exec-and-forget sketchybar",
+  # "exec-and-forget borders active_color=0×FFEB212E inactive_color=0xFF494D64 width=5.0",
+]
+
+# 'after-startup-command' is run after 'after-login-command'
+exec-on-workspace-change = [
+  "/bin/bash",
+  "-c",
+  "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE",
+  # 'exec-and-forget sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -58,12 +69,36 @@ automatically-unhide-macos-hidden-apps = false
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = 5
-inner.vertical =   5
-outer.left =       5
-outer.bottom =     5
-outer.top =        5
-outer.right =      5
+inner.horizontal = [
+  { monitor."Built-in Retina Display" = 5 },
+  { monitor."P27FBA-RAGL" = 7 },
+  5
+]
+inner.vertical= [
+  { monitor."Built-in Retina Display" = 5 },
+  { monitor."P27FBA-RAGL" = 5 },
+  5
+]
+outer.left = [
+  { monitor."Built-in Retina Display" = 0 },
+  { monitor."P27FBA-RAGL" = 5 },
+  5
+]
+outer.bottom = [
+  { monitor."Built-in Retina Display" = 0 },
+  { monitor."P27FBA-RAGL" = 5 },
+  5
+]
+outer.top = [
+  { monitor."Built-in Retina Display" = 4 },
+  { monitor."P27FBA-RAGL" = 35 },
+  5
+]
+outer.right = [
+  { monitor."Built-in Retina Display" = 0 },
+  { monitor."P27FBA-RAGL" = 5 },
+  5
+]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
