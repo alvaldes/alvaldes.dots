@@ -72,35 +72,64 @@ sketchybar --default \
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # ─────────────────────────────────────────────────────────────────────────────────
-# WORKSPACES (AEROSPACE)
+# WORKSPACES (AEROSPACE) — trigger-only fixed numbers pattern
 # ─────────────────────────────────────────────────────────────────────────────────
-# Create items for ALL AeroSpace workspaces, initially hidden.
-# The aerospace_events.sh daemon handles visibility, focus, and ordering
-# in real-time. space.sh runs periodically as a fallback via update_freq.
-WORKSPACES=$(aerospace list-workspaces --all --format '%{workspace}' 2>/dev/null || echo "")
+# All AeroSpace workspaces are created ONCE at startup in fixed numeric order
+# (by first digit) and NEVER move. Only the active one gets accent-styled.
+# No daemon, no polling (no update_freq), no runtime aerospace queries.
+#
+# aerospace.toml fires the trigger on every workspace change:
+#   sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE
+# Every space item is subscribed to that trigger; space.sh decides per-item
+# whether it is the active one (by first-digit comparison) and styles it.
+# Register the custom event that aerospace.toml fires on every workspace change.
+# Custom events MUST be declared with --add event before items can subscribe.
+sketchybar --add event aerospace_workspace_change
+
+WORKSPACES=$(aerospace list-workspaces --all --format '%{workspace}' 2>/dev/null \
+  | sort -t'-' -k1,1n || echo "")
 if [ -n "$WORKSPACES" ]; then
   while IFS= read -r ws; do
     [ -z "$ws" ] && continue
+    digit="${ws:0:1}"
     sketchybar --add item space.$ws left \
       --set space.$ws \
       icon.drawing=off \
-      label="$ws" \
+      label="$digit" \
       label.padding_left=8 \
       label.padding_right=8 \
       label.color=$DIM \
       label.font="IosevkaTerm NF:Regular:12.0" \
       padding_left=2 \
       padding_right=2 \
-      background.color=$ISLAND_BG \
-      background.border_color=$ISLAND_BORDER \
-      background.border_width=1 \
-      background.corner_radius=4 \
-      background.height=24 \
-      background.drawing=on \
-      drawing=off \
+      label.background.color=$ISLAND_BG \
+      label.background.border_color=$ISLAND_BORDER \
+      label.background.border_width=1 \
+      label.background.corner_radius=4 \
+      label.background.height=24 \
+      label.background.drawing=off \
+      drawing=on \
       script="$PLUGIN_DIR/space.sh" \
       click_script="aerospace workspace $ws" \
-      update_freq=3
+      --subscribe space.$ws aerospace_workspace_change
+  done <<<"$WORKSPACES"
+fi
+
+# Initial highlight: set the active workspace styling directly (not via trigger,
+# because trigger fires before all items have settled their subscriptions).
+INITIAL_FOCUSED=$(aerospace list-workspaces --focused --format '%{workspace}' 2>/dev/null)
+if [ -n "$INITIAL_FOCUSED" ]; then
+  FOCUSED_DIGIT="${INITIAL_FOCUSED:0:1}"
+  while IFS= read -r ws; do
+    [ -z "$ws" ] && continue
+    ws_digit="${ws:0:1}"
+    if [ "$ws_digit" = "$FOCUSED_DIGIT" ]; then
+      sketchybar --set "space.$ws" \
+        label.background.drawing=on \
+        label.color=$ACCENT_COLOR \
+        label.font="IosevkaTerm NF:Bold:12.0" \
+        label.background.border_color=$ACCENT_COLOR
+    fi
   done <<<"$WORKSPACES"
 fi
 
@@ -293,14 +322,6 @@ sketchybar --add item ram right \
   update_freq=10 \
   script="$PLUGIN_DIR/ram.sh" \
   click_script="open -a 'Activity Monitor'"
-
-# ─────────────────────────────────────────────────────────────────────────────────
-# AEROSPACE EVENT LISTENER (background daemon)
-# ─────────────────────────────────────────────────────────────────────────────────
-# Listens for AeroSpace workspace changes and triggers SketchyBar updates
-if command -v aerospace &>/dev/null; then
-  "$PLUGIN_DIR/aerospace_events.sh" &
-fi
 
 # ─────────────────────────────────────────────────────────────────────────────────
 # FINALIZE

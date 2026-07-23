@@ -28,8 +28,8 @@ prefix = "ctrl+a"
 
 # Move between agents in the sidebar.
 # Avoid Herdr's built-in prefix+shift+j/k pane-swap bindings.
-previous_agent = "prefix+alt+k"
-next_agent = "prefix+alt+j"
+previous_agent = "prefix+ctrl+k"
+next_agent = "prefix+ctrl+j"
 
 # Jump straight to agent N (1..9) as listed in the sidebar.
 # Use Ctrl after the prefix: Alt+number is owned by skhd/yabai spaces,
