@@ -13,10 +13,10 @@ layout {
 
                 border_enabled  "false"
                 border_char     "─"
-                border_format   "#[fg=#161617]{char}"  
+                border_format   "#[fg=#161617]{char}"
                 border_position "top"
 
-                mode_normal  "#[bg=#85B5BA] "  
+                mode_normal  "#[bg=#85B5BA] "
                 mode_tmux    "#[bg=#EA83A5] "  
 
                 tab_normal   "#[fg=#C9C7CD]{index}:{name} "  
@@ -38,3 +38,4 @@ layout {
         }
     }
 }
+
