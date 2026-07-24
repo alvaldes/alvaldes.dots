@@ -86,8 +86,8 @@ sketchybar --default \
 # Custom events MUST be declared with --add event before items can subscribe.
 sketchybar --add event aerospace_workspace_change
 
-WORKSPACES=$(aerospace list-workspaces --all --format '%{workspace}' 2>/dev/null \
-  | sort -t'-' -k1,1n || echo "")
+WORKSPACES=$(aerospace list-workspaces --all --format '%{workspace}' 2>/dev/null |
+  sort -t'-' -k1,1n || echo "")
 if [ -n "$WORKSPACES" ]; then
   while IFS= read -r ws; do
     [ -z "$ws" ] && continue
@@ -216,24 +216,24 @@ sketchybar --add item datetime right \
 # ─────────────────────────────────────────────────────────────────────────────────
 # MEETING (next calendar event)
 # ─────────────────────────────────────────────────────────────────────────────────
-sketchybar --add item meeting right \
-  --set meeting \
-  icon="MTG" \
-  icon.font="IosevkaTerm NF:Bold:10.0" \
-  icon.color=$YELLOW \
-  icon.padding_left=10 \
-  icon.padding_right=4 \
-  label.padding_right=10 \
-  label.max_chars=12 \
-  scroll_texts=on \
-  background.color=$ISLAND_BG \
-  background.border_color=$ISLAND_BORDER \
-  background.border_width=1 \
-  background.corner_radius=4 \
-  background.height=24 \
-  update_freq=60 \
-  script="$PLUGIN_DIR/meeting.sh" \
-  click_script="open -a Calendar"
+# sketchybar --add item meeting right \
+#   --set meeting \
+#   icon="MTG" \
+#   icon.font="IosevkaTerm NF:Bold:10.0" \
+#   icon.color=$YELLOW \
+#   icon.padding_left=10 \
+#   icon.padding_right=4 \
+#   label.padding_right=10 \
+#   label.max_chars=12 \
+#   scroll_texts=on \
+#   background.color=$ISLAND_BG \
+#   background.border_color=$ISLAND_BORDER \
+#   background.border_width=1 \
+#   background.corner_radius=4 \
+#   background.height=24 \
+#   update_freq=60 \
+#   script="$PLUGIN_DIR/meeting.sh" \
+#   click_script="open -a Calendar"
 
 # ─────────────────────────────────────────────────────────────────────────────────
 # VOLUME
