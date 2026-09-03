@@ -74,9 +74,17 @@ sketchybar --default \
 # ─────────────────────────────────────────────────────────────────────────────────
 # WORKSPACES (AEROSPACE) — trigger-only fixed numbers pattern
 # ─────────────────────────────────────────────────────────────────────────────────
-# All AeroSpace workspaces are created ONCE at startup in fixed numeric order
-# (by first digit) and NEVER move. Only the active one gets accent-styled.
-# No daemon, no polling (no update_freq), no runtime aerospace queries.
+# Sketchybar shows ONLY the persistent workspaces declared in aerospace.toml.
+# This list is hardcoded here as the single render-time source of truth.
+# When you add/rename a persistent workspace in aerospace.toml, ALSO update this
+# array — the two files intentionally duplicate the list (explicit > inferred).
+#
+# Why hardcoded and not `aerospace list-workspaces --all`:
+# AeroSpace auto-creates anonymous workspaces (bare numeric names like "1") on
+# any monitor that has no workspace assigned via workspace-to-monitor-force-assignment.
+# Querying --all would surface those anonymous workspaces, collide with custom-named
+# ones by first-digit (e.g. "1" vs "1-social"), and render duplicate space items.
+# Hardcoding the 8 persistent workspaces eliminates that drift.
 #
 # aerospace.toml fires the trigger on every workspace change:
 #   sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE
@@ -86,42 +94,40 @@ sketchybar --default \
 # Custom events MUST be declared with --add event before items can subscribe.
 sketchybar --add event aerospace_workspace_change
 
-WORKSPACES=$(aerospace list-workspaces --all --format '%{workspace}' 2>/dev/null |
-  sort -t'-' -k1,1n || echo "")
-if [ -n "$WORKSPACES" ]; then
-  while IFS= read -r ws; do
-    [ -z "$ws" ] && continue
-    digit="${ws:0:1}"
-    sketchybar --add item space.$ws left \
-      --set space.$ws \
-      icon.drawing=off \
-      label="$digit" \
-      label.padding_left=8 \
-      label.padding_right=8 \
-      label.color=$DIM \
-      label.font="IosevkaTerm NF:Regular:12.0" \
-      padding_left=2 \
-      padding_right=2 \
-      label.background.color=$ISLAND_BG \
-      label.background.border_color=$ISLAND_BORDER \
-      label.background.border_width=1 \
-      label.background.corner_radius=4 \
-      label.background.height=24 \
-      label.background.drawing=off \
-      drawing=on \
-      script="$PLUGIN_DIR/space.sh" \
-      click_script="aerospace workspace $ws" \
-      --subscribe space.$ws aerospace_workspace_change
-  done <<<"$WORKSPACES"
-fi
+WORKSPACES=(
+  "1-social" "2-browser" "3-dev" "4-music"
+  "5-email" "8-others" "9-AI" "0-work"
+)
+for ws in "${WORKSPACES[@]}"; do
+  digit="${ws:0:1}"
+  sketchybar --add item space.$ws left \
+    --set space.$ws \
+    icon.drawing=off \
+    label="$digit" \
+    label.padding_left=8 \
+    label.padding_right=8 \
+    label.color=$DIM \
+    label.font="IosevkaTerm NF:Regular:12.0" \
+    padding_left=2 \
+    padding_right=2 \
+    label.background.color=$ISLAND_BG \
+    label.background.border_color=$ISLAND_BORDER \
+    label.background.border_width=1 \
+    label.background.corner_radius=4 \
+    label.background.height=24 \
+    label.background.drawing=off \
+    drawing=on \
+    script="$PLUGIN_DIR/space.sh" \
+    click_script="aerospace workspace $ws" \
+    --subscribe space.$ws aerospace_workspace_change
+done
 
 # Initial highlight: set the active workspace styling directly (not via trigger,
 # because trigger fires before all items have settled their subscriptions).
 INITIAL_FOCUSED=$(aerospace list-workspaces --focused --format '%{workspace}' 2>/dev/null)
 if [ -n "$INITIAL_FOCUSED" ]; then
   FOCUSED_DIGIT="${INITIAL_FOCUSED:0:1}"
-  while IFS= read -r ws; do
-    [ -z "$ws" ] && continue
+  for ws in "${WORKSPACES[@]}"; do
     ws_digit="${ws:0:1}"
     if [ "$ws_digit" = "$FOCUSED_DIGIT" ]; then
       sketchybar --set "space.$ws" \
@@ -130,7 +136,7 @@ if [ -n "$INITIAL_FOCUSED" ]; then
         label.font="IosevkaTerm NF:Bold:12.0" \
         label.background.border_color=$ACCENT_COLOR
     fi
-  done <<<"$WORKSPACES"
+  done
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────────

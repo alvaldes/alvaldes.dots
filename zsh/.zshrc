@@ -30,7 +30,7 @@ BREW_SHARE="/opt/homebrew/share/"
 # Usar la variable BREW_BIN donde se necesite
 eval "$($BREW_BIN/brew shellenv)"
 
-source $(dirname $BREW_SHARE)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source $(dirname $BREW_SHARE)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh  # disabled: too aggressive with short aliases (gst, gco, etc.)
 source $(dirname $BREW_SHARE)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $(dirname $BREW_SHARE)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(dirname $BREW_SHARE)/share/powerlevel10k/powerlevel10k.zsh-theme

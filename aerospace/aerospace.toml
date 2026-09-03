@@ -4,6 +4,18 @@
 # It's not necessary to copy all keys to your config.
 # If the key is missing in your config, "default-config.toml" will serve as a fallback
 
+# Config version for compatibility and deprecations
+# See: https://nikitabobko.github.io/AeroSpace/guide#config-version
+config-version = 2
+
+# Workspaces that stay alive even when they contain no windows.
+# Only available since config-version = 2.
+# In v1 this was inferred from workspace bindings (error-prone); now declared explicitly.
+persistent-workspaces = [
+  "1-social", "2-browser", "3-dev", "4-music",
+  "5-email", "8-others", "9-AI", "0-work",
+]
+
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
