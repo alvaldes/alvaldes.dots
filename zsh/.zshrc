@@ -13,12 +13,21 @@ compinit
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# to use this uncomment from here
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
+#
+# source $(dirname $BREW_SHARE)/share/powerlevel10k/powerlevel10k.zsh-theme
+# export ZSH="$HOME/.oh-my-zsh"
+# to this -- p10k
 
-export ZSH="$HOME/.oh-my-zsh"
+# Rust
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Set nvim as default editor for opencode and other tools
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 if [[ $- == *i* ]]; then
     # Commands to run in interactive sessions can go here
@@ -33,13 +42,15 @@ eval "$($BREW_BIN/brew shellenv)"
 # source $(dirname $BREW_SHARE)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh  # disabled: too aggressive with short aliases (gst, gco, etc.)
 source $(dirname $BREW_SHARE)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $(dirname $BREW_SHARE)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(dirname $BREW_SHARE)/share/powerlevel10k/powerlevel10k.zsh-theme
 source $(dirname $BREW_SHARE)/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 export PROJECT_PATHS="/home/alvaldes/Developer"
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_DEFAULT_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exlude .git"
+
+# Starship
+eval "$(starship init zsh)"
 
 # ----- ZELLIJ -----
 
@@ -92,7 +103,6 @@ source <(carapace _carapace)
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
-# eval "$(starship init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
