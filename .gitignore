@@ -44,3 +44,6 @@ nan/
 
 # OpenCode backup with sensitive config
 opencode/opencode.json.th-backup
+
+# OpenCode main config with sensitive data
+opencode/opencode.json
