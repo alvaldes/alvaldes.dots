@@ -11,10 +11,7 @@ config-version = 2
 # Workspaces that stay alive even when they contain no windows.
 # Only available since config-version = 2.
 # In v1 this was inferred from workspace bindings (error-prone); now declared explicitly.
-persistent-workspaces = [
-  "1-social", "2-browser", "3-dev", "4-music",
-  "5-email", "8-others", "9-AI", "0-work",
-]
+persistent-workspaces = ["1", "2", "3", "4", "5", "8", "9", "0"]
 
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
@@ -81,36 +78,12 @@ automatically-unhide-macos-hidden-apps = false
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = [
-  { monitor."Built-in Retina Display" = 5 },
-  { monitor."P27FBA-RAGL" = 7 },
-  5
-]
-inner.vertical= [
-  { monitor."Built-in Retina Display" = 5 },
-  { monitor."P27FBA-RAGL" = 5 },
-  5
-]
-outer.left = [
-  { monitor."Built-in Retina Display" = 0 },
-  { monitor."P27FBA-RAGL" = 5 },
-  5
-]
-outer.bottom = [
-  { monitor."Built-in Retina Display" = 0 },
-  { monitor."P27FBA-RAGL" = 5 },
-  5
-]
-outer.top = [
-  { monitor."Built-in Retina Display" = 4 },
-  { monitor."P27FBA-RAGL" = 35 },
-  5
-]
-outer.right = [
-  { monitor."Built-in Retina Display" = 0 },
-  { monitor."P27FBA-RAGL" = 5 },
-  5
-]
+inner.horizontal = [{ monitor."Built-in Retina Display" = 5 }, { monitor."P27FBA-RAGL" = 7 }, 5]
+inner.vertical = [{ monitor."Built-in Retina Display" = 5 }, { monitor."P27FBA-RAGL" = 5 }, 5]
+outer.left = [{ monitor."Built-in Retina Display" = 0 }, { monitor."P27FBA-RAGL" = 5 }, 5]
+outer.bottom = [{ monitor."Built-in Retina Display" = 0 }, { monitor."P27FBA-RAGL" = 5 }, 5]
+outer.top = [{ monitor."Built-in Retina Display" = 4 }, { monitor."P27FBA-RAGL" = 35 }, 5]
+outer.right = [{ monitor."Built-in Retina Display" = 0 }, { monitor."P27FBA-RAGL" = 5 }, 5]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -161,16 +134,16 @@ alt-minus = 'resize smart -50'
 alt-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-alt-1 = 'workspace 1-social'
-alt-2 = 'workspace 2-browser'
-alt-3 = 'workspace 3-dev'
-alt-4 = 'workspace 4-music'
-alt-5 = 'workspace 5-email'
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
 # alt-6 = 'workspace 6'
 # alt-7 = 'workspace 7'
-alt-8 = 'workspace 8-others'
-alt-9 = 'workspace 9-AI'
-alt-0 = 'workspace 0-work'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 0'
 # alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
 # alt-b = 'workspace B'
 # alt-c = 'workspace C'
@@ -195,16 +168,16 @@ alt-0 = 'workspace 0-work'
 # alt-z = 'workspace Z'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-alt-shift-1 = 'move-node-to-workspace 1-social'  
-alt-shift-2 = 'move-node-to-workspace 2-browser'    
-alt-shift-3 = 'move-node-to-workspace 3-dev'     
-alt-shift-4 = 'move-node-to-workspace 4-music' 
-alt-shift-5 = 'move-node-to-workspace 5-email'  
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
 # alt-shift-6 = 'move-node-to-workspace 6'
 # alt-shift-7 = 'move-node-to-workspace 7'
-alt-shift-8 = 'move-node-to-workspace 8-others'
-alt-shift-9 = 'move-node-to-workspace 9-AI'
-alt-shift-0 = 'move-node-to-workspace 0-work'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-0 = 'move-node-to-workspace 0'
 # alt-shift-a = 'move-node-to-workspace A'
 # alt-shift-b = 'move-node-to-workspace B'
 # alt-shift-c = 'move-node-to-workspace C'
@@ -273,50 +246,56 @@ alt-shift-l = ['join-with right', 'mode main']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
-run = 'move-node-to-workspace 1-social'
+run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
 if.app-id = 'com.readdle.SparkDesktop-setapp'
 run = [
   #  'layout floating',
-  'move-node-to-workspace 5-email'
+  'move-node-to-workspace 5',
 ]
 
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
-run = 'move-node-to-workspace 1-social'
+run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'
-run = 'move-node-to-workspace 8-others'
+run = 'move-node-to-workspace 8'
 
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
-run = 'move-node-to-workspace 2-browser'
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 3-dev'
+run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-id = 'com.music.client'
-run = 'move-node-to-workspace 4-music'
+run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = 'move-node-to-workspace 4-music'
+run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 if.app-id = 'com.colliderli.iina'
-run = 'move-node-to-workspace 8-others'
+run = 'move-node-to-workspace 8'
 
 [[on-window-detected]]
 if.app-id = 'com.openai.chat'
-run = 'move-node-to-workspace 9-AI'
+run = 'move-node-to-workspace 9'
 
 [[on-window-detected]]
 if.app-id = 'com.electron.ollama'
-run = 'move-node-to-workspace 9-AI'
+run = 'move-node-to-workspace 9'
 
+# $ aerospace list-monitors
 
+[workspace-to-monitor-force-assignment]
+# 1 = 'main'                 # Force workspace 1 to the main/primary monitor
+8 = 2 # Force workspace 8 to the second monitor
+# 3 = 3                      # Force workspace 3 to the third monitor
+# 4 = 'P27FBA-RAGL'          # Matches a specific screen name (list-monitors)
 
