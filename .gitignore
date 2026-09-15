@@ -38,3 +38,9 @@ codexbar/
 herdr/plugins.json
 herdr/plugins/
 herdr/release-notes.json
+
+# Session state with tokens
+nan/
+
+# OpenCode backup with sensitive config
+opencode/opencode.json.th-backup
