@@ -44,13 +44,6 @@ alias py="python3"
 alias pip="pip3"
 
 # #######################################################
-# #   THEFUCK                                             # #
-# #######################################################
-# thefuck
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-
-# #######################################################
 # #   PRODUCTIVITY & FUN                                  # #
 # #######################################################
 # extras
@@ -89,6 +82,10 @@ export PATH="$PATH:/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 # #   HOMEBREW                                              # #
 # #######################################################
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# thefuck
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
 
 # #######################################################
 # #   SDKMAN                                                  # #
