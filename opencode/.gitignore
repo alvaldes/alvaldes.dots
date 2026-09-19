@@ -1,0 +1,6 @@
+# opencode plugin workspace.
+#
+# Repository-wide ignore rules live in the root .gitignore. This file only pins
+# the local dependency directory. It intentionally does NOT ignore package.json
+# or bun.lock: both describe the workspace and belong in version control.
+node_modules/

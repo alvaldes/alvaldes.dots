@@ -1,0 +1,22 @@
+{
+  "_comment": [
+    "Template for ~/.openvpn-connect.json (OpenVPN Connect app state).",
+    "The real file records VPN hostnames and usernames and MUST NOT be versioned.",
+    "Create it manually: cp ~/.config/templates/.openvpn-connect.json.example ~/.openvpn-connect.json",
+    "The app rewrites this file on every connection, so manual creation is only",
+    "needed if you want the same defaults; the app recreates it otherwise."
+  ],
+  "black_and_white_icons": false,
+  "hide_toolbar_duration": false,
+  "http_proxy": "",
+  "last_connect": {
+    "host": "vpn.example.com",
+    "user": "YOUR_VPN_USER"
+  },
+  "preferred_hosts": {
+    "vpn.example.com": "vpn.example.com"
+  },
+  "recent": {},
+  "verbose_tooltip": true,
+  "vpn_proto": "adaptive"
+}

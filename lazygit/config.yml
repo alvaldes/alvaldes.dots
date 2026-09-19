@@ -1,0 +1,17 @@
+customCommands:
+  - key: "C"
+    command: "git cz c"
+    description: "commit with commitizen"
+    context: "files"
+    loadingText: "opening commitizen commit tool"
+    subprocess: true
+git:
+  paging:
+    # Set the pager to use git-delta with appropriate options
+    pager: "delta --paging=never --dark"
+
+    # Ensure Lazygit respects this custom pager configuration
+    useConfig: false
+
+  # Optional: Use git-delta for external diff commands
+  externalDiffCommand: "delta --dark"

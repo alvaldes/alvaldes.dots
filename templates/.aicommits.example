@@ -1,0 +1,14 @@
+# Template for ~/.aicommits
+#
+# The real file holds a plaintext OpenAI key and MUST NOT be versioned.
+# Create it manually:
+#
+#   cp ~/.config/templates/.aicommits.example ~/.aicommits
+#   # then replace the placeholder with a real key
+#
+# install.sh only links home/, so this file is never copied or linked for you.
+#
+# Note: this template is the only surviving record of the file's shape, which is
+# exactly why it is versioned.
+
+OPENAI_KEY=YOUR_OPENAI_API_KEY

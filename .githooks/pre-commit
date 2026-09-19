@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+#
+# pre-commit — block secrets from entering this repository.
+#
+# Installed by install.sh, which points core.hooksPath at .githooks/ so a fresh
+# clone gets it without touching .git/hooks.
+#
+# What it does:
+#   1. Refuses to commit if a known credential-vault path is staged. Those paths
+#      are gitignored, so this only fires on a deliberate `git add -f`, and it
+#      gives a far clearer message than a generic secret warning.
+#   2. Runs betterleaks over the staged content only.
+#
+# Bypass for a confirmed false positive:
+#   SKIP=betterleaks git commit ...
+#
+# This repository is PUBLIC. A secret committed here is public immediately, and
+# removing it later does not undo that: a pushed commit that is rewritten out of
+# history stays retrievable from GitHub by its SHA. Rewriting is not a fix.
+#
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+
+if [[ "${SKIP:-}" == "betterleaks" || "${SKIP:-}" == "*" ]]; then
+  printf 'pre-commit: secret scan skipped (SKIP=%s)\n' "$SKIP" >&2
+  exit 0
+fi
+
+# --- 1. Credential vaults -----------------------------------------------------
+# These hold literal, live credentials. They are gitignored; staging one means
+# `git add -f` was used. See the "never versioned" table in README.md.
+VAULT_PATHS='(^|/)(\.continue/|\.tokenharbor/|codexbar/|nan/|raycast/|github-copilot/)(.*)$'
+VAULT_FILES='(^|/)(\.wakatime\.cfg|\.aicommits|\.openvpn-connect\.json|\.claude\.json)$'
+
+staged_vault="$(
+  git diff --cached --name-only --diff-filter=ACMR 2>/dev/null \
+    | grep -E "$VAULT_PATHS|$VAULT_FILES" || true
+)"
+
+if [[ -n "$staged_vault" ]]; then
+  cat >&2 <<EOF
+pre-commit blocked: a credential vault is staged.
+
+$(printf '  %s\n' $staged_vault)
+
+These files contain live credentials in plaintext and must never be published.
+They are gitignored, so they can only be staged with \`git add -f\`.
+
+Remove them from the index:
+  git restore --staged <path>
+EOF
+  exit 1
+fi
+
+# --- 2. Secret scan over the staged content -----------------------------------
+if ! command -v betterleaks >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+pre-commit: betterleaks is not installed, so the staged changes were NOT scanned.
+
+Install it to enable the check:
+  brew install betterleaks
+EOF
+  # Fail open on purpose: a missing optional tool must not block commits.
+  exit 0
+fi
+
+if betterleaks git --pre-commit --staged --redact --no-banner; then
+  exit 0
+fi
+
+cat >&2 <<'EOF'
+
+pre-commit blocked: betterleaks reported a possible secret in the staged changes.
+
+Read the finding above and remove the credential, then commit again.
+
+Remember this repository is public. Committing it publishes it, and a later
+history rewrite does not take it back: GitHub keeps serving an unreachable
+object by its SHA, so rotate the credential instead of relying on removal.
+
+Genuine false positive? Add an allowlist entry to .betterleaks.toml using
+`condition = "AND"` so it cannot over-suppress. Do not disable the hook.
+EOF
+
+exit 1

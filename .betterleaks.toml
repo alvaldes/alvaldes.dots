@@ -1,0 +1,53 @@
+# Secret scanning configuration for this repository.
+#
+# Selected config source: betterleaks looks for .betterleaks.toml at the target
+# path. Confirm with `betterleaks config path` and inspect the merged result with
+# `betterleaks config show`.
+#
+# Usage:
+#   betterleaks git .                                  scan history (reachable commits)
+#   betterleaks git --pre-commit --staged --redact     scan what is about to be committed
+#
+# IMPORTANT — read before editing this file.
+#
+# 1. A global `filter` or `prefilter` REPLACES the extended default's, it does
+#    not combine with it. From config.go:
+#        // Current config's global Prefilter/Filter wins over extension's if set.
+#        if c.Filter == "" { c.Filter = extensionConfig.Filter }
+#    Writing a global filter here silently discards every path-based false
+#    positive suppression shipped with betterleaks and floods the scan. The same
+#    applies to a rule-level `filter`, which overwrites that rule's filter.
+#    Allowlists are APPENDED instead, so they are the additive mechanism. Use
+#    them, which is what this file does.
+#
+# 2. An allowlist `condition` defaults to "OR", not "AND" as in gitleaks. With
+#    `paths` and `regexes` set and no `condition`, matching EITHER one suppresses
+#    the finding, which over-suppresses. Every allowlist here sets
+#    condition = "AND" deliberately.
+#
+# 3. Betterleaks and gitleaks both scan with `git log -p --all`, which only sees
+#    reachable commits. They would NOT find a credential that was pushed and then
+#    rewritten out of history. For that, see the forensic section in README.md:
+#    the object store scan is still required.
+
+[extend]
+useDefault = true
+
+# Documentation fixtures.
+#
+# The skill files carry literal test placeholders inside code examples, so the
+# generic-password rule flags them on every scan. A scanner that always reports
+# the same 6 non-issues gets ignored with SKIP=, which is worse than no scanner.
+#
+# `condition = "AND"` is what makes this safe: BOTH the path and the placeholder
+# value must match. A real credential committed under skills/ is still reported,
+# and these placeholder values are still reported from anywhere else in the tree.
+[[allowlists]]
+description = "Test placeholders in skill documentation code examples"
+condition = "AND"
+targetRules = ["generic-password"]
+paths = ['''(?:^|/)skills?/''']
+regexes = [
+  '''pass123''',
+  '''TestPassword123!''',
+]

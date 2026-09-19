@@ -1,0 +1,13 @@
+# Template for ~/.wakatime.cfg
+#
+# The real file holds a plaintext WakaTime API key and MUST NOT be versioned.
+# Create it manually:
+#
+#   cp ~/.config/templates/.wakatime.cfg.example ~/.wakatime.cfg
+#   # then replace the placeholder with your key from
+#   # https://wakatime.com/settings/api-key
+#
+# install.sh only links home/, so this file is never copied or linked for you.
+
+[settings]
+api_key=YOUR_WAKATIME_API_KEY

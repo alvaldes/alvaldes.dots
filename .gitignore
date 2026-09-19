@@ -1,0 +1,147 @@
+# =============================================================================
+# Dotfiles repository ignore rules
+#
+# This repository's root mirrors $HOME/.config, plus an extra home/ directory
+# whose entries are symlinked into $HOME by install.sh.
+#
+#   <dir>/     mirrors ~/.config/<dir>
+#   home/      symlinked into $HOME
+#
+# Policy: track hand-written configuration and the user's own small data files.
+# Never track secrets, generated artifacts, or re-downloadable binaries.
+# When a config file legitimately needs a secret, version a .example template
+# with placeholder values and ignore the real file here.
+#
+# Full rationale and the audit that produced these rules: odd/tasks/repo-organization.md
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Secrets and credentials — NEVER TRACK
+# -----------------------------------------------------------------------------
+# Plaintext keys and tokens. These live outside version control on purpose.
+# The rules below are path-independent safety nets: they match at any depth, so
+# a real secret stays invisible whether it lands in home/, templates/, or
+# anywhere else in the tree.
+.wakatime.cfg
+.aicommits
+.openvpn-connect.json
+.claude.json
+.claude.json.backup
+.tokenharbor/
+.wakatime.bdb
+# ~/.continue/config.json is a credential vault: it holds literal apiKey values
+# for gemini, mistral, openai (tokenharbor), and tab autocomplete, plus the
+# autocompleteCache.sqlite index caches them again. It lives outside this
+# repository today. Ignored so it can never be pulled in through home/.
+.continue/
+.ssh/
+.gnupg/
+# Shell history and editor state can leak commands, tokens, and paths.
+.zsh_history
+.zsh_sessions/
+.bash_history
+.python_history
+.zhistory
+.viminfo
+.lesshst
+.zcompdump*
+# Third-party tools whose config embeds credentials or session tokens.
+# Each one was inspected and confirmed to hold a plaintext token, and the reason
+# is recorded here so a future cleanup does not re-add them: a small file named
+# "config" is not automatically safe.
+# NOTE: these reasons must stay on their own comment lines. In .gitignore a `#`
+# is only a comment at the start of a line; text after a pattern on the same
+# line becomes part of the pattern and silently disables it.
+#
+# codexbar/       -> plaintext API tokens
+# nan/            -> session state with tokens
+# raycast/        -> config.json: Raycast access token; aster-endpoint.json: token
+# github-copilot/ -> apps.json: GitHub OAuth token (ghu_...)
+codexbar/
+nan/
+raycast/
+github-copilot/
+opencode/opencode.json
+opencode/opencode.json.th-backup
+opencode/opencode.json.*.bak
+
+# -----------------------------------------------------------------------------
+# Generated artifacts — reproducible, never track
+# -----------------------------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.zwc
+*.log
+.DS_Store
+*.bak
+*.th-backup
+# Neovim generates .spl from .add; only the hand-curated .add is tracked.
+nvim/spell/*.spl
+# herdr writes this lock at runtime.
+herdr/.plugins.lock
+
+# -----------------------------------------------------------------------------
+# Downloaded binaries and bulk data — re-downloadable, never track
+# -----------------------------------------------------------------------------
+# Neovim spell dictionaries and raw word lists (23.6 MB of repo objects).
+nvim/spell/*.txt
+nvim/spell/*.utf-8.spl
+# Zellij plugins are fetched by the plugin manager (12.9 MB across history).
+zellij/plugins/*.wasm
+# Third-party Ghostty shaders arrived as one bulk download, not as personal work.
+# ghostty/config references exactly one shader, which stays tracked.
+ghostty/shaders/*
+!ghostty/shaders/cursor_smear_gentleman.glsl
+
+# -----------------------------------------------------------------------------
+# Runtime state, personal data, and machine-specific files
+# -----------------------------------------------------------------------------
+.atl/
+cagent/
+gentleman-trainer/
+herdr/*.log
+herdr/plugins.json
+herdr/plugins/
+herdr/release-notes.json
+herdr/session.json
+.supermaven/
+GentlemanClaude/
+GentlemanTmux/
+atuin/
+configstore/
+flutter/
+gtk-2.0/
+jgit/
+# Only the app's own rotating backups. karabiner/karabiner.json, the actual
+# keyboard remapping configuration, IS tracked on purpose.
+karabiner/automatic_backups/
+# The imported complex-modification library (4 files, 20 KB). Not tracked today:
+# the rules actually enabled are inlined in karabiner.json, so it restores
+# without these. Ignored rather than left untracked so it does not clutter
+# `git status` or get swept up by a `git add -A`. To version it, delete this
+# line and commit karabiner/assets/.
+karabiner/assets/
+obsidian/
+texstudio/
+xm1/
+
+# -----------------------------------------------------------------------------
+# Stray files
+# -----------------------------------------------------------------------------
+# `]` is a shell redirect accident, not configuration.
+]
+bash-env.nu
+
+# -----------------------------------------------------------------------------
+# ODD local tracking (mirrored to Engram; not part of the published dotfiles)
+# -----------------------------------------------------------------------------
+odd/
+
+# -----------------------------------------------------------------------------
+# opencode plugin workspace
+# -----------------------------------------------------------------------------
+opencode/node_modules/
+# bun is the package manager here; the text lockfile is tracked, the binary one is not.
+opencode/bun.lockb
+opencode/package-lock.json

@@ -1,0 +1,71 @@
+[user]
+	name = alvaldes
+	email = angelluis2605@gmail.com
+[core]
+	excludesfile = /Users/alvaldes/.gitignore_global
+	autocrlf = input
+	pager = delta
+	editor = nvim
+	ignorecase = false
+[diff]
+	tool = nvimdiff
+	colorMoved = default
+[difftool "nvimdiff"]
+	cmd = nvim -d "$LOCAL" "$REMOTE"
+[mergetool "nvimdiff"]
+	cmd = nvim -d "$LOCAL" "$REMOTE" -merge "$MERGED"
+	trustExitCode = true
+[push]
+	default = simple
+[color]
+	ui = auto
+[alias]
+	# Gestión de ramas
+	bm = branch --merged
+	bn = branch --no-merged
+	ba = branch -a
+
+	# Push/Pull de la rama actual
+	ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+	pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
+
+	# Alias rápidos
+	ca = commit -a
+	st = status
+	br = branch
+	d = diff
+	co = checkout
+	ci = commit
+
+	# Historial mejorado
+	# The format string contains spaces, so its quotes must stay escaped: the
+	# git-config parser consumes a bare " as quoting and would drop it, and the
+	# alias splitter would then break the format apart on whitespace.
+	hist = log --pretty=format:\"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)\" --graph --date=relative --decorate --all
+	llog = log --graph --name-status --pretty=format:\"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset\" --date=relative
+
+	# GitHub
+	open = "!gh browse"
+
+	# Interactivos con peco
+	a = "!git status --short | peco | awk '{print $2}' | xargs git add"
+	df = "!git hist | peco | awk '{print $2}' | xargs -I {} git diff {}^ {}"
+	find = "!f() { git log --pretty=format:\"%h %cd [%cn] %s%d\" --date=relative -S\"$@\" | peco | awk '{print $1}' | xargs -I {} git diff {}^ {}; }; f"
+
+	# Utilidades de merge
+	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	features = side-by-side
+	syntax-theme = zenburn
+	line-numbers = true
+	navigate = true
+[merge]
+	conflictStyle = zdiff3
