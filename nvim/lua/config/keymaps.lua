@@ -204,8 +204,6 @@ vim.keymap.set("v", "<leader>sg", function()
   -- Use the selected text for grep
   if pcall(require, "snacks") then
     require("snacks").picker.grep({ search = selected_text })
-  elseif pcall(require, "fzf-lua") then
-    require("fzf-lua").live_grep({ search = selected_text })
   else
     vim.notify("No grep picker available", vim.log.levels.ERROR)
   end
@@ -243,8 +241,6 @@ vim.keymap.set("v", "<leader>sG", function()
   -- Use the selected text for grep at root level
   if pcall(require, "snacks") then
     require("snacks").picker.grep({ search = selected_text, cwd = root })
-  elseif pcall(require, "fzf-lua") then
-    require("fzf-lua").live_grep({ search = selected_text, cwd = root })
   else
     vim.notify("No grep picker available", vim.log.levels.ERROR)
   end
