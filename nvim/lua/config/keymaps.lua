@@ -843,3 +843,52 @@ keymap.set("n", "<leader>if", function()
 end, { desc = "[P](macOS) Open image under cursor in Finder" })
 
 -- ############################################################################
+
+----- Native buffer cleanup (R1-2) -----
+-- Replaces the abandoned close-buffers.nvim plugin: ~20 lines of native Lua
+-- with no dependency. Both maps skip modified buffers, so unsaved work is
+-- never discarded.
+
+-- Close hidden buffers: a listed, loaded, normal buffer (`buftype == ""`) that
+-- no window is currently displaying and which has no unsaved changes (an
+-- unloaded hidden buffer is left alone). This is the same notion of "hidden" that
+-- close-buffers.nvim used (it collected the buffers visible in every window
+-- and deleted the rest: close-buffers.nvim/lua/close_buffers/buffers.lua:181-203),
+-- not the `bufhidden` option.
+keymap.set("n", "<leader>bh", function()
+  local displayed = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    displayed[vim.api.nvim_win_get_buf(win)] = true
+  end
+
+  local closed = 0
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if
+      vim.api.nvim_buf_is_valid(buf)
+      and vim.api.nvim_buf_is_loaded(buf)
+      and vim.bo[buf].buflisted
+      and vim.bo[buf].buftype == ""
+      and displayed[buf] == nil
+      and not vim.bo[buf].modified
+    then
+      vim.api.nvim_buf_delete(buf, {})
+      closed = closed + 1
+    end
+  end
+  vim.notify(("Closed %d hidden buffer(s)"):format(closed))
+end, { desc = "Close Hidden Buffers" })
+
+-- Close every nameless buffer: normal buftype (`buftype == ""`) with no file
+-- name. This may include the current buffer, which is intended.
+keymap.set("n", "<leader>bN", function()
+  local closed = 0
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) then
+      if vim.bo[buf].buftype == "" and not vim.bo[buf].modified and vim.api.nvim_buf_get_name(buf) == "" then
+        vim.api.nvim_buf_delete(buf, {})
+        closed = closed + 1
+      end
+    end
+  end
+  vim.notify(("Closed %d nameless buffer(s)"):format(closed))
+end, { desc = "Close Nameless Buffers" })
