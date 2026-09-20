@@ -6,7 +6,7 @@ return {
     -- URL: https://github.com/akinsho/bufferline.nvim
     -- Description: A snazzy buffer line (with tabpage integration) for Neovim.
     "akinsho/bufferline.nvim",
-    enabled = true, -- Disable this plugin
+    enabled = true, -- keep bufferline enabled (LazyVim default); the old comment said the opposite
   },
   {
     -- Plugin: obsidian.nvim
