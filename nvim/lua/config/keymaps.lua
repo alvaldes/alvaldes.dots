@@ -9,16 +9,9 @@ local keymap = vim.keymap
 -- Do things without affecting the registers
 keymap.set("n", "x", '"_x')
 
--- Increment/decrement
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "-", "<C-x>")
-
 -- Position cursor at the middle of the screen after scrolling half page
 keymap.set("n", "<C-d>", "<C-d>zz") -- Scroll down half a page and center the cursor
 keymap.set("n", "<C-u>", "<C-u>zz") -- Scroll up half a page and center the cursor
-
--- Select all
-keymap.set("n", "<C-a>", "gg<S-v>G")
 
 -- Position cursor at the middle of the screen after moving
 -- keymap.set("n", "j", "jzz") -- Move cursor down and center the screen
