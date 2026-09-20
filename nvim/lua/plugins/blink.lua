@@ -3,6 +3,15 @@ return {
   lazy = true,
   dependencies = { "saghen/blink.compat" },
   opts = {
+    -- blink defaults `completion.menu.winblend` to 0; LazyVim sets
+    -- `pumblend = 10` (LazyVim/lua/lazyvim/config/options.lua:86), so matching it
+    -- makes the completion menu translucent like the other popups. The value is
+    -- read once, when this spec file is evaluated at startup.
+    completion = {
+      menu = {
+        winblend = vim.o.pumblend,
+      },
+    },
     sources = {
       default = { "avante_commands", "avante_mentions", "avante_files" },
       compat = {
