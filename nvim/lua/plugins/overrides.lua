@@ -35,6 +35,11 @@ return {
             return require("lspconfig.util").root_pattern("angular.json", "project.json")(fname) -- Set root directory based on angular.json or project.json
           end,
         },
+        -- CSS/SCSS/Less: no LazyVim extra exists for this server (mason: css-lsp,
+        -- already installed). LazyVim's tailwind extra also relies on it.
+        cssls = {},
+        -- HTML: no LazyVim extra exists either (mason: html-lsp).
+        html = {},
       },
     },
   },
