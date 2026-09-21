@@ -20,8 +20,6 @@ yellow = "#DEBA87"
 [ui]
 accent = "#6FA0AF"
 
-show_agent_labels_on_pane_borders = true
-agent_panel_sort = "spaces"
 status_indicators = "dots"
 [keys]
 # Match tmux/Zellij-style prefix muscle memory.
@@ -39,10 +37,3 @@ focus_agent = "prefix+ctrl+1..9"
 
 [ui.toast]
 delivery = "herdr"
-
-[experimental]
-pane_history = false
-switch_ascii_input_source_in_prefix = false
-
-[ui.sound]
-enabled = true
