@@ -3,9 +3,6 @@
 # Current Apps - shows all apps in the current workspace
 # The focused app is highlighted with brackets [App]
 
-ACCENT=0xffe0c15a
-WHITE=0xfff3f6f9
-
 # Get current space
 CURRENT_SPACE=$(yabai -m query --spaces --space 2>/dev/null | jq -r '.index')
 

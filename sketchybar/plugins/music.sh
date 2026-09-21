@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Music - single osascript call instead of 3 separate ones
+source "$CONFIG_DIR/colors.sh"
 
-GREEN=0xffb7cc85
-RED=0xffcb7c94
-DIM=0xff565f89
+# Music - single osascript call instead of 3 separate ones
 
 if pgrep -x "Spotify" > /dev/null 2>&1; then
   INFO=$(osascript -e 'tell application "Spotify" to if player state is playing then return artist of current track & " - " & name of current track' 2>/dev/null)

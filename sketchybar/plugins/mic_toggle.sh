@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# Toggle microphone mute/unmute with pulse animation
+source "$CONFIG_DIR/colors.sh"
 
-# Colors
-RED=0xffcb7c94
-GREEN=0xffb7cc85
-DIM=0xff565f89
-YELLOW=0xffffe066
+# Toggle microphone mute/unmute with pulse animation
 
 # Animation settings
 ANIM_DURATION=5

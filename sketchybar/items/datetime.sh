@@ -1,12 +1,17 @@
 #!/bin/bash
 
 # ─────────────────────────────────────────────────────────────────────────────────
-# FRONT APP — app name and app icon
+# DATETIME — date and time
 # ─────────────────────────────────────────────────────────────────────────────────
-# The item subscribes to front_app_switched only. There is no floating indication here
-# any more, and this file no longer needs colors.sh or theme.sh: it applies no style of
-# its own.
 
-if [ "$SENDER" = "front_app_switched" ]; then
-  sketchybar --set $NAME label="$INFO" icon.background.image="app.$INFO"
-fi
+datetime=(
+  icon="$ICON_CALENDAR"
+  icon.font="$FONT_ICON_GLYPH"
+  icon.color=$YELLOW
+  label.padding_right=$PAD_LABEL_R_METRIC
+  update_freq=30
+  script="$PLUGIN_DIR/datetime.sh"
+  click_script="open -a Calendar"
+)
+
+sketchybar --add item datetime right --set datetime "${datetime[@]}"

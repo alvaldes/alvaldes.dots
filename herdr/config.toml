@@ -20,6 +20,10 @@ yellow = "#DEBA87"
 [ui]
 accent = "#6FA0AF"
 
+pane_gaps = false
+pane_outer_borders = false
+pane_scrollbars = false
+
 status_indicators = "dots"
 [keys]
 # Match tmux/Zellij-style prefix muscle memory.

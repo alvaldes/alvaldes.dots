@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# GitHub - displays unread notification count
+source "$CONFIG_DIR/colors.sh"
 
-YELLOW=0xffffe066
-DIM=0xff565f89
+# GitHub - displays unread notification count
 
 COUNT=$(gh api notifications 2>/dev/null | jq 'length' 2>/dev/null)
 

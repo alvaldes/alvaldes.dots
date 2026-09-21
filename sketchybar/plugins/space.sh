@@ -1,46 +1,36 @@
 #!/bin/bash
 
-# SPACE/WORKSPACE INDICATOR — trigger-only handler
+# ─────────────────────────────────────────────────────────────────────────────────
+# SPACE — focus indicator for one workspace digit
+# ─────────────────────────────────────────────────────────────────────────────────
+# Invoked by the aerospace_workspace_change trigger that aerospace.toml fires:
+#     sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE
 #
-# Called by the aerospace_workspace_change trigger (fired by aerospace.toml hook)
-# with FOCUSED_WORKSPACE=<full-ws-name> as env var. Compares the first digit of
-# the focused workspace against this item's digit and styles accordingly.
-# Items are label-only (no icon), so background lives under label.background.
-# No daemon, no polling, no runtime aerospace queries here.
+# $NAME is "space.<workspace>". Workspace names are bare digits, matching what
+# `aerospace list-workspaces` reports, so an exact comparison is correct here.
+#
+# No runtime aerospace queries and no polling: the trigger drives everything.
 
-# ── Guard: only process when triggered by aerospace_workspace_change ────────────
-# sketchybar --update triggers all scripts with FOCUSED_WORKSPACE empty, which
-# would overwrite the active-workspace styling we set in sketchybarrc inline init.
-# Exit early to preserve that initial state.
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/theme.sh"
+
+# `sketchybar --update` runs every item script with FOCUSED_WORKSPACE unset. Bail out
+# so the highlight painted inline by items/spaces.sh on load is not overwritten.
 [ -z "$FOCUSED_WORKSPACE" ] && exit 0
 
-# ── Colors (hardcoded; must match sketchybarrc) ────────────────────────────────
-ACCENT=0xffe0c15a
-DIM=0xff565f89
-ISLAND_BG=0xff121620
-ISLAND_BORDER=0xff263356
-
-# Extract workspace name from item name (strip "space." prefix → "1-social")
 WORKSPACE="${NAME#space.}"
 
-# Extract the first digit of the focused workspace and of this item
-FOCUSED_DIGIT="${FOCUSED_WORKSPACE:0:1}"
-MY_DIGIT="${WORKSPACE:0:1}"
-
-if [ "$MY_DIGIT" = "$FOCUSED_DIGIT" ]; then
-  # This item is the active workspace — accent highlight
+if [ "$WORKSPACE" = "$FOCUSED_WORKSPACE" ]; then
   sketchybar --set "$NAME" \
-    drawing=on \
     label.background.drawing=on \
-    label.background.color=$ISLAND_BG \
-    label.background.border_color=$ACCENT \
-    label.background.border_width=1 \
-    label.color=$ACCENT \
-    label.font="IosevkaTerm NF:Bold:12.0"
+    label.background.color=$TRANSPARENT \
+    label.background.border_color=$ACCENT_COLOR \
+    label.background.border_width=$ISLAND_BORDER_W \
+    label.color=$ACCENT_COLOR \
+    label.font="$FONT_SPACE_ACTIVE"
 else
-  # Inactive workspace — dim, no background
   sketchybar --set "$NAME" \
     label.background.drawing=off \
     label.color=$DIM \
-    label.font="IosevkaTerm NF:Regular:12.0"
+    label.font="$FONT_SPACE"
 fi

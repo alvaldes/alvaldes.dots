@@ -1,10 +1,9 @@
 #!/bin/bash
 
+source "$CONFIG_DIR/colors.sh"
+
 # Meeting - shows next calendar event (next 24 hours)
 # IMPORTANT: Uses pgrep to check if Calendar is running (osascript can launch apps)
-
-YELLOW=0xffffe066
-DIM=0xff565f89
 
 # Check if Calendar is running using pgrep (safe, won't launch the app)
 if ! pgrep -x "Calendar" > /dev/null 2>&1; then

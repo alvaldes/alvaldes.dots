@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # ─────────────────────────────────────────────────────────────────────────────────
-# FRONT APP — app name and app icon
+# GPU — Apple Silicon GPU utilisation, from plugins/gpu.sh
 # ─────────────────────────────────────────────────────────────────────────────────
-# The item subscribes to front_app_switched only. There is no floating indication here
-# any more, and this file no longer needs colors.sh or theme.sh: it applies no style of
-# its own.
 
-if [ "$SENDER" = "front_app_switched" ]; then
-  sketchybar --set $NAME label="$INFO" icon.background.image="app.$INFO"
-fi
+gpu=(
+  icon="$ICON_GPU"
+  icon.font="$FONT_ICON_GLYPH"
+  icon.color=$ORANGE
+  label.width=$METRIC_LABEL_W
+  label.align=right
+  label.padding_right=$PAD_LABEL_R_METRIC
+  update_freq=10
+  script="$PLUGIN_DIR/gpu.sh"
+  click_script="open -a 'Activity Monitor'"
+)
+
+sketchybar --add item gpu right --set gpu "${gpu[@]}"

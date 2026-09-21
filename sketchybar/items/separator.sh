@@ -1,12 +1,15 @@
 #!/bin/bash
 
 # ─────────────────────────────────────────────────────────────────────────────────
-# FRONT APP — app name and app icon
+# SEPARATOR — visual divider between the workspaces and the front app
 # ─────────────────────────────────────────────────────────────────────────────────
-# The item subscribes to front_app_switched only. There is no floating indication here
-# any more, and this file no longer needs colors.sh or theme.sh: it applies no style of
-# its own.
 
-if [ "$SENDER" = "front_app_switched" ]; then
-  sketchybar --set $NAME label="$INFO" icon.background.image="app.$INFO"
-fi
+sketchybar --add item separator_left left \
+  --set separator_left \
+    icon=">" \
+    icon.color=$ACCENT_COLOR \
+    icon.font="$FONT_SEPARATOR" \
+    icon.padding_left=$SPACE_LABEL_PAD \
+    icon.padding_right=$SPACE_LABEL_PAD \
+    background.drawing=off \
+    label.drawing=off

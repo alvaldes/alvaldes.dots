@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# CPU - ps-based (19ms) instead of top (500ms)
+source "$CONFIG_DIR/colors.sh"
 
-RED=0xffcb7c94
-YELLOW=0xffffe066
-CYAN=0xff7aa89f
+# CPU - ps-based (19ms) instead of top (500ms)
 
 NCPU=$(sysctl -n hw.ncpu)
 CPU=$(ps -A -o %cpu | awk -v n="$NCPU" '{s+=$1} END {v=s/n; if(v>100)v=100; printf "%d",v}')

@@ -1,11 +1,9 @@
 #!/bin/bash
 
+source "$CONFIG_DIR/colors.sh"
+
 # GPU - displays GPU usage for Apple Silicon (M1/M2/M3/M4)
 # Uses IOKit to get Device Utilization % from the GPU driver
-
-RED=0xffcb7c94
-YELLOW=0xffffe066
-ORANGE=0xfffff7b1
 
 # Get GPU utilization from IOAccelerator
 GPU=$(ioreg -r -d 1 -c IOAccelerator 2>/dev/null | grep -o '"Device Utilization %"=[0-9]*' | awk -F'=' '{print $2}' | head -1)

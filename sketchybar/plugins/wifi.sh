@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$CONFIG_DIR/colors.sh"
+
 # Network - displays connection status
 
 # Try to get WiFi SSID
@@ -16,11 +18,11 @@ fi
 if [ -z "$WIFI" ]; then
   sketchybar --set $NAME \
     icon="NET" \
-    icon.color=0xffcb7c94 \
+    icon.color=$RED \
     label="Off"
 else
   sketchybar --set $NAME \
     icon="NET" \
-    icon.color=0xff7aa89f \
+    icon.color=$CYAN \
     label="$WIFI"
 fi

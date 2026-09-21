@@ -4,6 +4,7 @@ $os\
 $git_branch\
 $git_status\
 $fill\
+$package\
 $nodejs\
 $rust\
 $golang\
@@ -108,6 +109,13 @@ read_only = "  "
 "Downloads" = " "
 "Music" = " "
 "Pictures" = " "
+
+[package]
+disabled = false
+display_private = true
+version_format = "$raw"
+format = '[[ $symbol($version) ](fg:peach)]($style)'
+symbol = "📦 "
 
 [cmd_duration]
 format = " took [ $duration]($style) "

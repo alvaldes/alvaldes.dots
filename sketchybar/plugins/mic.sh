@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# Mic - shows microphone status (on/off)
+source "$CONFIG_DIR/colors.sh"
 
-RED=0xffcb7c94
-DIM=0xff565f89
+# Mic - shows microphone status (on/off)
 
 # Get mic input volume (0 = muted)
 MIC_VOLUME=$(osascript -e "input volume of (get volume settings)")
