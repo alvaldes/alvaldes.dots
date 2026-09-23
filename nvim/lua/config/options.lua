@@ -10,3 +10,9 @@ vim.opt.timeoutlen = 300
 
 -- Do not wait for terminal key codes, so <Esc> and friends stay instant.
 vim.opt.ttimeoutlen = 0
+
+-- Spelling languages. This must live here and not in `lua/config/lazy.lua`:
+-- LazyVim loads its own `lazyvim.config.options` (which sets `spelllang = { "en" }`)
+-- first and the user's `config.options` afterwards, so only this file can
+-- override it. Anything set earlier is silently overwritten at startup.
+vim.opt.spelllang = { "en", "es" }

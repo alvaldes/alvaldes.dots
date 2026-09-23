@@ -2,7 +2,8 @@
 
 -- Spell-checking
 vim.opt.spell = true -- activa spell checker
-vim.opt.spelllang = { "en" }
+-- `spelllang` is intentionally NOT set here: LazyVim loads its own options
+-- after this file and overwrites any value, so it lives in `lua/config/options.lua`.
 
 -- Define the path to the lazy.nvim plugin
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
