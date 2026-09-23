@@ -256,12 +256,10 @@ vim.keymap.set("v", "<leader>sG", function()
   end
 end, { desc = "Grep Selected Text (Root Dir)" })
 
--- Delete all marks
-vim.keymap.set("n", "<leader>md", function()
-  vim.cmd("delmarks!")
-  vim.cmd("delmarks A-Z0-9")
-  vim.notify("All marks deleted")
-end, { desc = "Delete all marks" })
+-- Deleting marks has no keymap on purpose: `:delmarks A-Z0-9` clears the global and the automatic
+-- numbered marks (those are the last edited position in the last ten files, and they refill on their
+-- own), `:delmarks!` clears the buffer's lowercase ones, and `:delmarks a-c` takes a range. To look at
+-- them instead: `:marks`, the `'` which-key preset, or <leader>sm (the Snacks picker).
 
 -- ############################################################################
 -- Begin of markdown section
