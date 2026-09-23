@@ -267,20 +267,10 @@ end, { desc = "Delete all marks" })
 -- Begin of markdown section
 -- ############################################################################
 
--- Mappings for creating new groups that don't exist
--- When I press leader, I want to modify the name of the options shown
--- "m" is for "markdown" and "t" is for "todo"
--- https://github.com/folke/which-key.nvim?tab=readme-ov-file#%EF%B8%8F-mappings
-local wk = require("which-key")
-wk.add({
-  {
-    mode = { "n", "v" },
-    { "<leader>m", group = "markdown" },
-    { "<leader>mf", group = "fold" },
-    { "<leader>ms", group = "spell" },
-    { "<leader>msl", group = "language" },
-  },
-})
+-- The "markdown" group of the `<leader>` menu is named in `lua/plugins/which-key.lua`, next to every
+-- other group name and icon. It used to be declared here with `wk.add`, which only queues the spec
+-- until which-key's own setup flushes it — if this file ever ran after that, the group would silently
+-- lose its name again.
 
 -- Open the current file in the browser
 keymap.set("n", "<leader>fo", function()
