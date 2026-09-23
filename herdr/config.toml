@@ -41,3 +41,6 @@ focus_agent = "prefix+ctrl+1..9"
 
 [ui.toast]
 delivery = "herdr"
+
+[ui.sound]
+enabled = true

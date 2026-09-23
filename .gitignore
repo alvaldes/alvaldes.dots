@@ -145,3 +145,21 @@ opencode/node_modules/
 # bun is the package manager here; the text lockfile is tracked, the binary one is not.
 opencode/bun.lockb
 opencode/package-lock.json
+
+# -----------------------------------------------------------------------------
+# gentle-pi
+# -----------------------------------------------------------------------------
+# gentle-pi copies the previous .pi/ config to .pi-back/ before a reinstall. Nothing
+# reads it back; the live files are tracked under .pi/.
+.pi-back/
+
+# -----------------------------------------------------------------------------
+# herdr-managed opencode integration
+# -----------------------------------------------------------------------------
+# herdr writes these and overwrites them on every integration update; each file says
+# so in its own header. The tracked registration is opencode/tui.json, which lists the
+# plugins by name -- tui.jsonc is the generated sibling that points at these files.
+opencode/tui.jsonc
+opencode/herdr-tui-session.js
+opencode/herdr-opencode/
+opencode/plugins/herdr-agent-state.js

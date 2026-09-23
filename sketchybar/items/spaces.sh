@@ -69,9 +69,13 @@ done
 FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null)
 
 if [ -n "$FOCUSED_WORKSPACE" ]; then
+  # Only the label colour and font are painted here. The island edge is deliberately
+  # left at the neutral $ISLAND_BORDER that the SPACE array sets, so the focused
+  # workspace looks the same however it took focus: on a cold start (this block) or
+  # after a switch (plugins/space.sh). Painting $ACCENT_COLOR here is what made the
+  # first focused workspace the only one with a gold edge.
   sketchybar --set "space.$FOCUSED_WORKSPACE" \
     label.background.drawing=on \
     label.color=$ACCENT_COLOR \
-    label.background.border_color=$ACCENT_COLOR \
     label.font="$FONT_SPACE_ACTIVE"
 fi

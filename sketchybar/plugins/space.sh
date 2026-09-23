@@ -24,8 +24,6 @@ if [ "$WORKSPACE" = "$FOCUSED_WORKSPACE" ]; then
   sketchybar --set "$NAME" \
     label.background.drawing=on \
     label.background.color=$TRANSPARENT \
-    label.background.border_color=$ACCENT_COLOR \
-    label.background.border_width=$ISLAND_BORDER_W \
     label.color=$ACCENT_COLOR \
     label.font="$FONT_SPACE_ACTIVE"
 else
