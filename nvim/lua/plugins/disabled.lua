@@ -20,12 +20,14 @@ return {
     "akinsho/bufferline.nvim",
     enabled = true, -- on by default; listed here to make the state explicit
   },
-  -- obsidian.nvim is deliberately NOT listed here. Its own spec declares
-  -- `enabled = function() return not vim.g.disable_obsidian end`, and nothing in
-  -- this repo ever sets `vim.g.disable_obsidian`, so that function is the value
-  -- that wins the merge no matter what this file says — an `enabled = false`
-  -- entry here would look like a switch but would not switch anything. To park
-  -- Obsidian, remove or change that function in `lua/plugins/obsidian.lua`.
+  -- obsidian.nvim is deliberately NOT listed here: by the user's decision it loads
+  -- unconditionally, so `lua/plugins/obsidian.lua` declares no `enabled` at all.
+  -- (It used to declare `enabled = function() return not vim.g.disable_obsidian end`,
+  -- and since nothing in this repo assigns that global it always resolved `true` —
+  -- a switch that switched nothing. It was removed on 2026-09-22, not merely
+  -- documented.) Because no other spec declares one either, an entry added here
+  -- WOULD now take effect: this board is the switch. To park Obsidian, add it here
+  -- or set `enabled = false` in its own spec.
   {
     -- Plugin para mejorar la experiencia de edición en Neovim
     -- URL: https://github.com/yetone/avante.nvim
