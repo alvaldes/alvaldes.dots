@@ -60,14 +60,24 @@ keymap.set("n", "<leader>tk", "<cmd>VimtexStop<CR>", { desc = "Stop LaTeX compil
 keymap.set("n", "<leader>q", ":!zathura <C-r ≥ expand ('%:r') <cr> - pdf &<cr>", { desc = "Open Zathura" })
 
 ----- OBSIDIAN -----
-vim.keymap.set("n", "<leader>oc", "<cmd>Obsidian check<CR>", { desc = "Obsidian Check Checkbox" })
-vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian template<CR>", { desc = "Insert Obsidian Template" })
-vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open in Obsidian App" })
-vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Show Obsidian Backlinks" })
-vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian links<CR>", { desc = "Show Obsidian Links" })
-vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create New Note" })
-vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search Obsidian" })
-vim.keymap.set("n", "<leader>oq", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick Switch" })
+-- `:Obsidian check` walks the whole vault looking for frontmatter problems; it is NOT the checkbox
+-- toggle. Toggling is `:Obsidian toggle_checkbox` (and the plugin already maps `<cr>` to smart_action,
+-- which toggles a checkbox under the cursor).
+keymap.set("n", "<leader>oc", "<cmd>Obsidian toggle_checkbox<CR>", { desc = "Toggle checkbox" })
+keymap.set("n", "<leader>ot", "<cmd>Obsidian template<CR>", { desc = "Insert Obsidian Template" })
+keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open in Obsidian App" })
+keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Show Obsidian Backlinks" })
+keymap.set("n", "<leader>ol", "<cmd>Obsidian links<CR>", { desc = "Show Obsidian Links" })
+keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create New Note" })
+keymap.set("n", "<leader>oN", "<cmd>Obsidian new_from_template<CR>", { desc = "New Note From Vault Template" })
+keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search Obsidian" })
+keymap.set("n", "<leader>oq", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick Switch" })
+
+-- Daily notes subgroup. The group is declared in `lua/plugins/which-key.lua`; these are its children.
+keymap.set("n", "<leader>odt", "<cmd>Obsidian today<CR>", { desc = "Daily note: today" })
+keymap.set("n", "<leader>ody", "<cmd>Obsidian yesterday<CR>", { desc = "Daily note: yesterday" })
+keymap.set("n", "<leader>odm", "<cmd>Obsidian tomorrow<CR>", { desc = "Daily note: tomorrow" })
+keymap.set("n", "<leader>odp", "<cmd>Obsidian dailies<CR>", { desc = "Daily notes: pick recent" })
 
 -----  OIL -----
 keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })

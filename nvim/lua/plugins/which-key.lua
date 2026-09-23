@@ -29,11 +29,12 @@ return {
       desc = "Latex",
     },
     {
+      -- Daily-notes subgroup of Obsidian; its keymaps live in `lua/config/keymaps.lua`.
+      -- Note: `require("which-key").show({ group = ... })` is NOT a group filter — `wk.Filter` has no
+      -- `group` field, so that call showed the entire global keymap popup. A `group` declaration is
+      -- what actually builds the subgroup.
       "<leader>od",
-      function()
-        require("which-key").show({ group = "Daily" })
-      end,
-      desc = "Daily",
+      group = "Daily",
     },
   },
 }
