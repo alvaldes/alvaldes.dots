@@ -105,6 +105,15 @@ herdr/plugins.json
 herdr/plugins/
 herdr/release-notes.json
 herdr/session.json
+# herdr's live IPC endpoint and its rolling session snapshots. The socket files
+# themselves need no rule: git never reads a unix socket, so `herdr.sock` and
+# `herdr-client.sock` cannot be staged even by `git add -A`. This path is not a
+# socket -- it is a symlink into launchd's listener directory, and git does read
+# and stage symlinks, so without this rule it is one `git add -A` away from
+# being committed as a path that only resolves while launchd is running.
+# The snapshots are rewritten every few minutes while the server runs.
+herdr/herdr.sock.agent
+herdr/session-snapshots/
 .supermaven/
 GentlemanClaude/
 GentlemanTmux/
