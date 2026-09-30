@@ -173,6 +173,15 @@ source ~/.zprofile
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
+# #######################################################
+# #   DIRENV                                             # #
+# #######################################################
+# Carga/descarga variables de entorno por directorio (.envrc).
+# Debe quedar despues del PATH definitivo para no perderlo al recargar entorno.
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
