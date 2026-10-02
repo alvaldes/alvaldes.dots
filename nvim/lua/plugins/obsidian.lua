@@ -34,6 +34,13 @@ end
 --     *own* default template when frontmatter is off.
 --   * `note_id_func = vault_note_id` (§3.2): descriptive filenames, never overwritten.
 --   * `00 - Inbox` (§3.2) for new and daily notes, matching the app's `.obsidian/daily-notes.json`.
+--   * `daily_notes.template = "Diaria"` (§3.5): the plugin never reads `.obsidian/daily-notes.json`
+--     (only `core-plugins/audio_recorder.lua` exists here), so an unset template made the daily flow
+--     write a bare file with no frontmatter. The app's own daily template was aligned to `Diaria` by
+--     hand (`.obsidian/` is off limits, §2.6), so both paths now agree.
+--   * `created` uses `{{title}}` and not `{{date}}` in `_templates/Diaria.md`: the plugin's `date`
+--     substitution hardcodes `os.time()` (`config/default.lua:106`), so a backfilled daily (`ody`,
+--     `odm`, `today -3`) would record today instead of the day it logs.
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
@@ -64,6 +71,9 @@ return {
       enabled = false,
     },
     templates = {
+      -- Load-bearing, not decoration: `api.templates_dir()` returns nil when this is off, and both
+      -- `note.template` and `daily_notes.template` resolve through it (`api.lua:56`).
+      enabled = true,
       folder = "_templates",
       date_format = "YYYY-MM-DD",
       time_format = "HH:mm",
@@ -72,6 +82,8 @@ return {
       enabled = true,
       folder = "00 - Inbox",
       date_format = "YYYY-MM-DD",
+      -- §3.5: a daily note is a dated log with three working sections, not a capture.
+      template = "Diaria",
     },
   },
 }
