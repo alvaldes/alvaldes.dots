@@ -78,3 +78,6 @@ delivery = "herdr"
 
 [ui.sound]
 enabled = true
+
+[experimental]
+allow_nested = true
