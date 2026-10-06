@@ -114,6 +114,25 @@ herdr/session.json
 # The snapshots are rewritten every few minutes while the server runs.
 herdr/herdr.sock.agent
 herdr/session-snapshots/
+# herdr runs one server per named session and keeps that session's sockets, logs,
+# and rolling snapshots under herdr/sessions/<name>/. The rules just above match
+# the root-level files only, so without this line the whole per-session tree shows
+# up as untracked again.
+herdr/sessions/
+# cliamp rewrites all of these while it runs: live socket, pid, log, favorites
+# lock, resume point, and podcast progress.
+cliamp/cliamp.sock
+cliamp/cliamp.sock.pid
+cliamp/cliamp.log
+cliamp/radio_favorites.toml.lock
+cliamp/resume.json
+cliamp/podcast_progress.json
+# Play history grows with every track played. Runtime state, same reasoning as the
+# shell histories ignored above -- and it would churn on every commit.
+cliamp/history.toml
+# moshi writes this on first run: a hostId plus the local hostname. Machine-specific
+# and it restores nothing, unlike moshi/config.json, which IS tracked.
+moshi/host.json
 .supermaven/
 GentlemanClaude/
 GentlemanTmux/
