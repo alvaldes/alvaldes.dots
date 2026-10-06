@@ -1,0 +1,274 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
+# vim:fileencoding=utf-8:foldmethod=marker
+#
+# Everforest — dark, medium contrast (sainnhe/everforest palette.md).
+#
+# Palette reference (dark / medium is the documented default):
+#   palette1: bg_dim #232A2E  bg0 #2D353B  bg1 #343F44  bg2 #3D484D  bg3 #475258
+#             bg4 #4F585E  bg5 #56635F  bg_visual #543A48  bg_red #514045
+#             bg_yellow #4D4C43  bg_green #425047  bg_blue #3A515D  bg_purple #4A444E
+#   palette2: fg #D3C6AA  red #E67E80  orange #E69875  yellow #DBBC7F  green #A7C080
+#             aqua #83C092  blue #7FBBB3  purple #D699B6
+#             grey0 #7A8478  grey1 #859289  grey2 #9DA9A0
+#   statusline: 1 #A7C080 (green)  2 #D3C6AA (fg)  3 #E67E80 (red)
+#
+# Contrast variants only change the backgrounds. To switch, replace bg_dim/bg0..bg4:
+#   hard: bg_dim #1E2326  bg0 #272E33  bg1 #2E383C  bg2 #374145  bg3 #414B50  bg4 #495156
+#   soft: bg_dim #293136  bg0 #333C43  bg1 #3A464C  bg2 #434F55  bg3 #4D5960  bg4 #555F66
+#
+# Only the keys declared here override the preset theme-dark.toml; everything absent
+# (separator glyphs, columns, icons, syntect default) keeps its shipped default.
+#
+# Transparency: the canvas is left unpainted so the terminal background (and its opacity)
+# shows through.
+#   - `[app] overall` is NOT set. Measured with it set to bg0: yazi emitted 6 background
+#     fills of #2D353B across the screen; removing it dropped that count to 0. It also
+#     emits OSC 11, which overrides the terminal's own background color.
+#   - `[which] mask` is NOT set. Measured in 26.9.1 with `mask = { bg = "#FF00FF" }` and the
+#     which menu open: zero magenta cells emitted, the panel interior staying on the
+#     terminal default background. The key had no visible effect in this version.
+#   - `[status] progress_*` set only `fg`, so the progress track stays transparent.
+# Every remaining `bg` is a pill, marker or selection highlight, not a canvas:
+# tabs.active/inactive, mode.normal_*/select_*/unset_*, indicator.parent/current,
+# status.count_*, confirm buttons, spot.tbl_cell and the pick/cmp/input selections.
+
+# : App {{{
+
+# Left unset on purpose: `overall = { bg = ... }` fills the entire canvas and emits
+# OSC 11, killing terminal transparency. See the header note.
+
+# : }}}
+
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#A7C080" }
+
+# Find
+find_keyword  = { fg = "#DBBC7F", bold = true, italic = true, underline = true }
+find_position = { fg = "#D699B6", bold = true, italic = true }
+
+# Symlink
+symlink_target = { fg = "#83C092", italic = true }
+
+# Marker
+marker_copied   = { fg = "#A7C080", bg = "#A7C080" }
+marker_cut      = { fg = "#E67E80", bg = "#E67E80" }
+marker_marked   = { fg = "#83C092", bg = "#83C092" }
+marker_selected = { fg = "#DBBC7F", bg = "#DBBC7F" }
+marker_symbol   = "│"
+
+# Count
+count_copied   = { fg = "#2D353B", bg = "#A7C080" }
+count_cut      = { fg = "#2D353B", bg = "#E67E80" }
+count_selected = { fg = "#2D353B", bg = "#DBBC7F" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#4F585E" }
+
+# Highlighting
+# Left at the preset default. For an Everforest syntax-highlighted preview, point this
+# at a .tmTheme file, e.g. from sainnhe/everforest's tmTheme port. Previews forwarded to
+# the `code` plugin (see yazi.toml) are colored by bat, which reads BAT_THEME instead.
+
+# : }}}
+
+
+# : Tabs {{{
+
+[tabs]
+active   = { fg = "#2D353B", bg = "#A7C080", bold = true }
+inactive = { fg = "#859289", bg = "#343F44" }
+
+# : }}}
+
+
+# : Mode {{{
+
+[mode]
+normal_main = { fg = "#2D353B", bg = "#A7C080", bold = true }
+normal_alt  = { fg = "#A7C080", bg = "#343F44", bold = true }
+
+# Select mode
+select_main = { fg = "#2D353B", bg = "#E67E80", bold = true }
+select_alt  = { fg = "#E67E80", bg = "#343F44", bold = true }
+
+# Unset mode
+unset_main = { fg = "#2D353B", bg = "#E69875", bold = true }
+unset_alt  = { fg = "#E69875", bg = "#343F44", bold = true }
+
+# : }}}
+
+
+# : Indicator of hovered file {{{
+
+[indicator]
+parent  = { fg = "#2D353B", bg = "#859289" }
+current = { fg = "#2D353B", bg = "#A7C080" }
+preview = { fg = "#A7C080", underline = true }
+
+# : }}}
+
+
+# : Status bar {{{
+
+[status]
+# Permissions
+perm_sep   = { fg = "#7A8478" }
+perm_type  = { fg = "#A7C080" }
+perm_read  = { fg = "#DBBC7F" }
+perm_write = { fg = "#E67E80" }
+perm_exec  = { fg = "#83C092" }
+
+# Progress
+progress_label  = { bold = true }
+progress_normal = { fg = "#A7C080" }
+progress_error  = { fg = "#E67E80" }
+
+# : }}}
+
+
+# : Which {{{
+
+[which]
+border          = { fg = "#7FBBB3" }
+cand            = { fg = "#83C092" }
+rest            = { fg = "#7A8478" }
+desc            = { fg = "#D699B6" }
+separator_style = { fg = "#7A8478" }
+
+# `mask` is deliberately absent (see the header note): measured to have no visible
+# effect on the menu panel in 26.9.1.
+
+# : }}}
+
+
+# : Confirmation {{{
+
+[confirm]
+border  = { fg = "#7FBBB3" }
+title   = { fg = "#7FBBB3" }
+btn_yes = { fg = "#2D353B", bg = "#A7C080", bold = true }
+btn_no  = { fg = "#D3C6AA", bg = "#3D484D" }
+
+# : }}}
+
+
+# : Spotter {{{
+
+[spot]
+border = { fg = "#7FBBB3" }
+title  = { fg = "#7FBBB3" }
+
+# Table
+tbl_col  = { fg = "#7FBBB3" }
+tbl_cell = { fg = "#2D353B", bg = "#DBBC7F" }
+
+# : }}}
+
+
+# : Notification {{{
+
+[notify]
+title_info  = { fg = "#A7C080" }
+title_warn  = { fg = "#DBBC7F" }
+title_error = { fg = "#E67E80" }
+
+# : }}}
+
+
+# : Picker {{{
+
+[pick]
+border   = { fg = "#7FBBB3" }
+active   = { fg = "#2D353B", bg = "#A7C080", bold = true }
+inactive = {}
+
+# : }}}
+
+
+# : Input {{{
+
+[input]
+border   = { fg = "#7FBBB3" }
+title    = { fg = "#DBBC7F" }
+value    = {}
+selected = { fg = "#2D353B", bg = "#A7C080" }
+
+# : }}}
+
+
+# : Completion {{{
+
+[cmp]
+border   = { fg = "#7FBBB3" }
+active   = { fg = "#2D353B", bg = "#A7C080", bold = true }
+inactive = {}
+
+# : }}}
+
+
+# : Task manager {{{
+
+[tasks]
+border  = { fg = "#7FBBB3" }
+title   = {}
+hovered = { fg = "#D3C6AA", bg = "#3D484D", bold = true }
+
+# : }}}
+
+
+# : Help menu {{{
+
+[help]
+border  = { fg = "#7FBBB3" }
+chord   = { fg = "#83C092" }
+action  = {}
+hovered = { fg = "#D3C6AA", bg = "#3D484D", bold = true }
+
+# : }}}
+
+
+# : File-specific styles {{{
+
+[filetype]
+rules = [
+  # Media
+  { mime = "image/*", fg = "#D699B6" },
+  { mime = "video/*", fg = "#D699B6" },
+  { mime = "audio/*", fg = "#D699B6" },
+
+  # Archives
+  { mime = "application/zip", fg = "#E69875" },
+  { mime = "application/gzip", fg = "#E69875" },
+  { mime = "application/x-tar", fg = "#E69875" },
+  { mime = "application/x-bzip*", fg = "#E69875" },
+  { mime = "application/x-7z-*", fg = "#E69875" },
+  { mime = "application/x-rar", fg = "#E69875" },
+
+  # Documents
+  { mime = "application/pdf", fg = "#E67E80" },
+  { mime = "application/*doc*", fg = "#7FBBB3" },
+  { mime = "application/*sheet*", fg = "#83C092" },
+  { mime = "application/*presentation*", fg = "#D699B6" },
+
+  # Code / text
+  { mime = "text/*", fg = "#A7C080" },
+  { mime = "application/json", fg = "#DBBC7F" },
+  { mime = "application/javascript", fg = "#DBBC7F" },
+  { mime = "application/x-yaml", fg = "#DBBC7F" },
+  { mime = "application/toml", fg = "#DBBC7F" },
+
+  # Executable
+  { mime = "application/x-mach-binary", fg = "#83C092" },
+  { mime = "application/x-executable", fg = "#83C092" },
+  { mime = "application/x-sharedlib", fg = "#83C092" },
+
+  # Fallback
+  { url = "*", fg = "#D3C6AA" },
+  { url = "*/", fg = "#7FBBB3" },
+]
+
+# : }}}

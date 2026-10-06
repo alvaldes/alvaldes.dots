@@ -174,6 +174,19 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
 # #######################################################
+# #   YAZI SHELL WRAPPER                               # #
+# #######################################################
+# Wrapper oficial de yazi: abre el file manager y, al salir,
+# hace cd al ultimo directorio en el que estabas si cambio.
+function y() {
+    local tmp cwd; tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
+    command rm -f -- "$tmp"
+}
+
+# #######################################################
 # #   DIRENV                                             # #
 # #######################################################
 # Carga/descarga variables de entorno por directorio (.envrc).
