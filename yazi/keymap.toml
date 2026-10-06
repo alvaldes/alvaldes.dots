@@ -1,0 +1,18 @@
+[mgr]
+prepend_keymap = [
+  # ── Navigation ──
+  { on = ["g", "k"], run = "cd ~/Desktop", desc = "Go to Desktop" },
+  { on = ["g", "p"], run = "cd ~/Developer", desc = "Go to Projects" },
+
+  { on = "q", run = "quit --no-cwd-file", desc = "Quit without outputting cwd-file" },
+  { on = "Q", run = "quit", desc = "Quit the process" },
+
+  { on = "z", run = "plugin zoxide", desc = "Jump to a directory via zoxide" },
+  { on = "Z", run = "plugin fzf", desc = "Jump to a file/directory via fzf" },
+
+  # ── Sorting ──
+  { on = ["s", "n"], run = "sort natural", desc = "Sort by name" },
+  { on = ["s", "s"], run = "sort size", desc = "Sort by size" },
+  { on = ["s", "m"], run = "sort mtime", desc = "Sort by modified" },
+  { on = ["s", "e"], run = "sort extension", desc = "Sort by extension" },
+]
