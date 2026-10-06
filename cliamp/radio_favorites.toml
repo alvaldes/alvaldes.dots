@@ -1,0 +1,28 @@
+[[station]]
+name = "NPR 24 Hour Program Stream"
+url = "http://npr-ice.streamguys1.com/live.mp3"
+country = "The United States Of America"
+bitrate = 96
+codec = "MP3"
+tags = "news,news talk,political talk,politics,public radio,talk"
+homepage = "https://www.npr.org/2016/04/05/472557877/npr-program-stream"
+
+[[station]]
+name = "Cadena SER España"
+url = "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASER.mp3"
+country = "Spain"
+state = "Spain"
+bitrate = 128
+codec = "MP3"
+tags = "cultural news,live,news,news talk,spanish,sports news"
+homepage = "http://play.cadenaser.com/"
+
+[[station]]
+name = " #100 BEST IBIZA DEEP HOUSE"
+url = "https://stream.zeno.fm/lwv6zqgtv1dtv"
+country = "Canada"
+state = "Ontario"
+bitrate = 128
+codec = "MP3"
+tags = "chill,chill house,chillout,chillout+lounge,club dance,club house,community radio,dance,deep,deep house,electronic,fm,high quality audio,hits,house,music,news,public radio,radio,soulful house"
+homepage = "https://zeno.fm/radio/100-best-ibiza-deep-house-/"

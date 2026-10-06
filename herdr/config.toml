@@ -39,6 +39,40 @@ next_agent = "prefix+ctrl+j"
 # and Shift+number did not reach Herdr reliably in the current terminal setup.
 focus_agent = "prefix+ctrl+1..9"
 
+# herdr-cliamp transport and now-playing shortcuts.
+# m, t, u, and i are letters herdr's defaults leave free.
+# Note: herdr silently disables one side of a duplicate binding; run
+# `herdr config check` after editing and confirm it reports "config: ok".
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "herdr-cliamp.open"
+description = "cliamp: floating player"
+
+[[keys.command]]
+key = "prefix+M"
+type = "plugin_action"
+command = "herdr-cliamp.status"
+description = "cliamp: now playing"
+
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "herdr-cliamp.toggle"
+description = "cliamp: play/pause"
+
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-cliamp.next"
+description = "cliamp: next track"
+
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "herdr-cliamp.prev"
+description = "cliamp: previous track"
+
 [ui.toast]
 delivery = "herdr"
 
