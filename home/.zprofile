@@ -2,6 +2,10 @@
 # #   ZSH PROFILE - LOGIN SHELL CONFIGURATION           # #
 # #######################################################
 
+# Login/non-interactive coverage for the XDG pin in ~/.zshrc (idempotent:
+# keeps an existing value, so sourcing both files changes nothing).
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
 # --- setting alias ---
 # lsd: Opciones atractivas y minimalistas
 alias ll="lsd -l --group-dirs=first"

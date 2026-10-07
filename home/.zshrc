@@ -2,6 +2,17 @@
 # #   ZSH CONFIGURATION - SHELL RUNTIME CONFIGURATION   # #
 # #######################################################
 
+# #######################################################
+# #   XDG BASE DIRS                                    # #
+# #######################################################
+# Must stay at the top: on macOS the XDG default for ConfigHome is
+# ~/Library/Application Support, so XDG-aware Go tools (lazygit, carapace,
+# anything using os.UserConfigDir or github.com/adrg/xdg) look there first
+# and a stale file found there silently shadows the real one in ~/.config.
+# Pin it to ~/.config before any of those tools is spawned. An externally
+# provided value wins, so this stays overridable.
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
 # Created by Zap installer
 # [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 # plug "zsh-users/zsh-autosuggestions"
