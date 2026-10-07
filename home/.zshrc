@@ -116,6 +116,17 @@ bindkey '\e[A' fzf-always-history
 bindkey '\e[OA' fzf-always-history
 
 # #######################################################
+# #   EDIT COMMAND LINE (Ctrl-X Ctrl-E)                # #
+# #######################################################
+# Open the current command buffer in $EDITOR/$VISUAL (nvim).
+# The widget name is 'edit-command-line' with a hyphen: an '='
+# there makes autoload look for a non-existent file and zle -N
+# register a broken widget, so the real one stays unbound.
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# #######################################################
 # #   EXPORTED PATHS                                   # #
 # #######################################################
 export PROJECT_PATHS="/home/alvaldes/Developer"
