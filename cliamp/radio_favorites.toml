@@ -26,3 +26,31 @@ bitrate = 128
 codec = "MP3"
 tags = "chill,chill house,chillout,chillout+lounge,club dance,club house,community radio,dance,deep,deep house,electronic,fm,high quality audio,hits,house,music,news,public radio,radio,soulful house"
 homepage = "https://zeno.fm/radio/100-best-ibiza-deep-house-/"
+
+[[station]]
+name = "88.9 Noticias - 88.9 FM - XHM-FM - Grupo ACIR - Ciudad de México"
+url = "https://playerservices.streamtheworld.com/api/livestream-redirect/XHMFMAAC_SC.aac"
+country = "Mexico"
+state = "Ciudad de México"
+bitrate = 48
+codec = "AAC+"
+tags = "88.9,88.9 fm,acir,balada en español,baladas en español,cdmx,ciudad de méxico,espacio deportivo,español,estación,fm,fundación acir,grupo acir,hablada,iheart,iheart radio,informacion,información,informativa,mex,mx,news,noticias,noticias cortas,noticias en español,noticias locales,noticias y comentarios,panorama informativo,radio,radio hablada,rock en español"
+homepage = "https://www.iheart.com/live/889-noticias-6531/"
+
+[[station]]
+name = "CNN"
+url = "https://tunein.cdnstream1.com/2868_96.mp3"
+country = "The United States Of America"
+bitrate = 96
+codec = "MP3"
+tags = "news"
+homepage = "https://www.cnn.com/"
+
+[[station]]
+name = "Fox News Radio"
+url = "https://live.amperwave.net/direct/foxnewsradio-foxnewsradioaac-imc?source=fnr.web"
+country = "The United States Of America"
+bitrate = 64
+codec = "AAC+"
+tags = "news"
+homepage = "https://radio.foxnews.com/"

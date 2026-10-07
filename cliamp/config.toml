@@ -5,3 +5,5 @@ visualizer = "Wave"
 
 
 hide_help_bar = true
+[radio]
+country = "MX"
