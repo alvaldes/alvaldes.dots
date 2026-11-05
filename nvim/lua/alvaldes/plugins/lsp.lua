@@ -15,6 +15,9 @@ require("mason-tool-installer").setup({
 		"copilot-language-server",
 		"angular-language-server",
 		"astro-language-server",
+		"css-lsp",
+		"html-lsp",
+		"marksman",
 		"json-lsp",
 		"yaml-language-server",
 	},
@@ -45,4 +48,6 @@ vim.lsp.enable({
 	"astro",
 	"jsonls",
 	"yamlls",
+	"html",
+	"marksman",
 })

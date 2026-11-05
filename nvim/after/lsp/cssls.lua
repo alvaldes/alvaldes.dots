@@ -1,8 +1,9 @@
 ---@type vim.lsp.Config
 return {
 	settings = {
-		css = { lint = { emptyRules = "ignore" } },
-		scss = { lint = { emptyRules = "ignore" } },
-		less = { lint = { emptyRules = "ignore" } },
+		-- Tailwind v4 at-rules (@theme, @apply, @custom-variant...) are handled by tailwindcss/biome
+		css = { lint = { emptyRules = "ignore", unknownAtRules = "ignore" } },
+		scss = { lint = { emptyRules = "ignore", unknownAtRules = "ignore" } },
+		less = { lint = { emptyRules = "ignore", unknownAtRules = "ignore" } },
 	},
 }
