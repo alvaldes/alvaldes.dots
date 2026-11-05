@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
 #
-# install.sh — link this repository's home/ entries into $HOME.
+# install.sh — wire this repository into $HOME.
 #
-# The repository root mirrors $HOME/.config, so everything outside home/ is
-# already in place once the repository is cloned to ~/.config. This script only
-# handles the files that live directly in $HOME.
+# The repository root mirrors $HOME/.config, so everything is already in place
+# once the repository is cloned to ~/.config. This script only handles the few
+# files that tools look up directly in $HOME.
 #
 # Behavior:
-#   - Every file in home/ becomes a symlink at $HOME/<name>.
-#   - home/ contains only files to link. Secret templates live in templates/,
-#     which is deliberately outside home/ so nothing can link them by accident.
+#   - Each entry in LINKS becomes a symlink at $HOME/<name> pointing into the
+#     repository (for example ~/.zshenv -> ~/.config/zsh/.zshenv).
+#   - ~/.hushlogin is created as an empty file. login(1) only checks that it
+#     exists, so there is nothing to version.
 #   - An existing regular file is moved into a timestamped backup directory
 #     before the symlink replaces it.
 #   - Re-running is safe: an already-correct symlink is reported and skipped.
+#   - A dangling symlink in $HOME that points into the repository (a file that
+#     has since moved) is removed.
 #
 # Usage:
-#   ./install.sh              link home/ into $HOME
+#   ./install.sh              wire the repository into $HOME
 #   ./install.sh --dry-run    print the plan without changing anything
 #   ./install.sh --help       show this help
 #
@@ -27,11 +30,15 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="${DOTFILES_DIR:-$SCRIPT_DIR}"
-SRC_DIR="$REPO_ROOT/home"
 TARGET_HOME="${DOTFILES_HOME_TARGET:-${HOME:-}}"
 
+# <name in $HOME>:<path relative to the repository root>
+LINKS=(
+  ".zshenv:zsh/.zshenv"
+)
+
 usage() {
-  sed -n '2,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '2,28p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 }
 
 DRY_RUN=0
@@ -51,15 +58,10 @@ if [[ -z "$TARGET_HOME" ]]; then
   exit 1
 fi
 
-if [[ ! -d "$SRC_DIR" ]]; then
-  printf 'install.sh: %s does not exist\n' "$SRC_DIR" >&2
-  exit 1
-fi
-
 if [[ "$REPO_ROOT" != "$TARGET_HOME/.config" ]]; then
   printf 'install.sh: note — repository is at %s, not %s/.config\n' \
     "$REPO_ROOT" "$TARGET_HOME" >&2
-  printf 'install.sh: the ~/.config mirror only works in place; home/ links are unaffected.\n' >&2
+  printf 'install.sh: the ~/.config mirror only works in place; $HOME links are unaffected.\n' >&2
 fi
 
 backup_dir="$TARGET_HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
@@ -75,11 +77,28 @@ run() {
   fi
 }
 
-for src in "$SRC_DIR"/.[!.]* "$SRC_DIR"/*; do
-  [[ -e "$src" ]] || continue
+# Remove dangling links left behind by files that moved inside the repository
+# (for example ~/.zshenv from when it lived in home/). Only links that point
+# into the repository and whose target no longer exists are touched.
+pruned=0
+for dest in "$TARGET_HOME"/.[!.]* "$TARGET_HOME"/*; do
+  [[ -L "$dest" && ! -e "$dest" ]] || continue
+  current="$(readlink -- "$dest")"
+  [[ "$current" == "$REPO_ROOT"/* ]] || continue
+  printf 'prune           %s (target %s is gone)\n' "$dest" "$current"
+  run rm -f -- "$dest"
+  pruned=$((pruned + 1))
+done
 
-  name="$(basename -- "$src")"
+for entry in "${LINKS[@]}"; do
+  name="${entry%%:*}"
+  src="$REPO_ROOT/${entry#*:}"
   dest="$TARGET_HOME/$name"
+
+  if [[ ! -e "$src" ]]; then
+    printf 'install.sh: %s does not exist\n' "$src" >&2
+    exit 1
+  fi
 
   if [[ -L "$dest" ]]; then
     current="$(readlink -- "$dest")"
@@ -103,6 +122,14 @@ for src in "$SRC_DIR"/.[!.]* "$SRC_DIR"/*; do
   linked=$((linked + 1))
 done
 
+# Silence the "Last login" banner. Any existing file or link already works.
+if [[ -e "$TARGET_HOME/.hushlogin" ]]; then
+  printf 'already present %s\n' "$TARGET_HOME/.hushlogin"
+else
+  printf 'create          %s\n' "$TARGET_HOME/.hushlogin"
+  run touch -- "$TARGET_HOME/.hushlogin"
+fi
+
 # ---------------------------------------------------------------------------
 # Git hooks
 # ---------------------------------------------------------------------------
@@ -125,8 +152,8 @@ if [[ -d "$REPO_ROOT/.githooks" ]] && git -C "$REPO_ROOT" rev-parse --git-dir >/
   fi
 fi
 
-printf '\nsummary: %d linked, %d already correct, %d original files backed up\n' \
-  "$linked" "$already" "$backed_up"
+printf '\nsummary: %d linked, %d already correct, %d original files backed up, %d stale links pruned\n' \
+  "$linked" "$already" "$backed_up" "$pruned"
 
 printf 'git hooks: %s\n' "$hooks_report"
 

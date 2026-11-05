@@ -1,8 +1,16 @@
-[user]
-	name = alvaldes
-	email = angelluis2605@gmail.com
+# Identity lives in an untracked, machine-local file so it is not published.
+# On a new machine, create ~/.gitconfig.local (outside this repo) with:
+#
+#   [user]
+#   	name = <your name or handle>
+#   	email = <your email or GitHub noreply address>
+#
+# Optionally add per-machine settings there too (signingkey, credential helper).
+# Git silently ignores a missing include, so commits will fail with
+# "Please tell me who you are" until that file exists.
+[include]
+	path = ~/.gitconfig.local
 [core]
-	excludesfile = /Users/alvaldes/.gitignore_global
 	autocrlf = input
 	pager = delta
 	editor = nvim
@@ -17,10 +25,13 @@
 	trustExitCode = true
 [push]
 	default = simple
+[ghq]
+	root = ~/Developer
 [color]
 	ui = auto
 [alias]
 	# Gestión de ramas
+	br = branch
 	bm = branch --merged
 	bn = branch --no-merged
 	ba = branch -a
@@ -30,12 +41,11 @@
 	pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
 
 	# Alias rápidos
-	ca = commit -a
-	st = status
-	br = branch
 	d = diff
 	co = checkout
-	ci = commit
+  ci = commit
+	ca = commit -a
+	st = status
 
 	# Historial mejorado
 	# The format string contains spaces, so its quotes must stay escaped: the

@@ -26,22 +26,7 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 # #######################################################
 # Load and initialise completion system
 autoload -Uz compinit
-compinit
-
-# #######################################################
-# #   POWERLEVEL10K INSTANT PROMPT                     # #
-# #######################################################
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# to use this uncomment from here
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-#
-# source $(dirname $BREW_SHARE)/share/powerlevel10k/powerlevel10k.zsh-theme
-# export ZSH="$HOME/.oh-my-zsh"
-# to this -- p10k
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 # #######################################################
 # #   RUST                                             # #
@@ -83,13 +68,8 @@ source $(dirname /opt/homebrew/share)/share/zsh-autosuggestions/zsh-autosuggesti
 # #   FZF INTEGRATION & SMART ARROW UP                  # #
 # #######################################################
 
-# 1. Carga tradicional compatible de FZF en macOS
-if [ -d "/opt/homebrew/opt/fzf" ]; then
-  source "/opt/homebrew/opt/fzf/shell/completion.zsh"
-  source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
-elif [ -f ~/.fzf.zsh ]; then
-  source ~/.fzf.zsh
-fi
+# 1. fzf itself is loaded once by `eval "$(fzf --zsh)"` in PRODUCTIVITY TOOLS;
+# the widgets below resolve fzf-history-widget at keypress time.
 
 # 2. Definir la función inteligente para la flecha arriba
 # fzf-always-history activa el buscador fzf siempre
@@ -129,10 +109,11 @@ bindkey '^x^e' edit-command-line
 # #######################################################
 # #   EXPORTED PATHS                                   # #
 # #######################################################
-export PROJECT_PATHS="/home/alvaldes/Developer"
+export PROJECT_PATHS="$HOME/Developer"
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-export FZF_DEFAULT_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exlude .git"
+export FZF_CTRL_T_COMMAND="fd --type=f --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_OPTS="--prompt='Directory> ' --preview 'bat --color=always --style=numbers --line-range=:300 {}'"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
 # #######################################################
 # #   STARSHIP PROMPT                                    # #
@@ -140,59 +121,50 @@ export FZF_ALT_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exlude .git"
 # Starship
 eval "$(starship init zsh)"
 
-# #######################################################
-# #   ZELLIJ                                           # #
-# #######################################################
-
-WM_VAR="/$ZELLIJ"
-# TMUX or ZELLIJ
-WM_CMD="zellij"
-# tmux or zellij
-
-function start_if_needed() {
-    if [[ $- == *i* ]] && [[ -z "${WM_VAR#/}" ]] && [[ -t 1 ]]; then
-        exec $WM_CMD
-    fi
-}
-
-# Definir la función start_zellij
-start_zellij() {
-  # Verificar si no estamos ya dentro de una sesión de Zellij
-  if [[ -z "$ZELLIJ" ]]; then
-    # Si la variable ZELLIJ_AUTO_ATTACH está establecida en 'true', adjuntar a una sesión existente
-    if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
-      zellij attach -c
-    else
-      # De lo contrario, iniciar una nueva sesión de Zellij
-      zellij
-    fi
-
-    # Si la variable ZELLIJ_AUTO_EXIT está establecida en 'true', salir del shell al salir de Zellij
-    if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
-      exit
-    fi
-  fi
-}
-
-# alias
-alias ze=start_zellij
-alias zj='zellij a --index 0'
-
-# #######################################################
-# #   PLUGINS                                          # #
-# #######################################################
-#plugins
-plugins=(
-  command-not-found
-)
-
-source ~/.zprofile
-# source $ZSH/oh-my-zsh.sh
+source "$ZDOTDIR/.zprofile"
 
 # #######################################################
 # #   PRODUCTIVITY TOOLS                                 # #
 # #######################################################
 eval "$(fzf --zsh)"
+# Ctrl-O: pick a file with fzf and insert its path at the cursor (e.g. `vim ^O`)
+bindkey '^O' fzf-file-widget
+
+# Ctrl-F: jump to a project with fzf. Candidates: ~/.config, ghq repos,
+# gwq worktrees, ~/Developer/local folders and subdirectories of $PWD.
+# The cd runs through accept-line (like fzf's Alt-C) so precmd hooks,
+# zoxide and the prompt all see the directory change.
+fzf-project-widget() {
+  setopt localoptions pipefail no_aliases 2>/dev/null
+  local dir
+  dir=$(
+    {
+      print -r -- "$HOME/.config"
+      command ghq list -p 2>/dev/null
+      command gwq list -g --json 2>/dev/null | jq -r '.[].path' 2>/dev/null
+      print -rl -- "$HOME"/Developer/local/*(N/)
+      print -rl -- "$PWD"/*(N/)
+    } | awk '!seen[$0]++' | sed "s|^$HOME|~|" |
+      fzf --prompt='Project> ' --scheme=path \
+        --preview 'p={}; eza -1 --icons=always --group-directories-first "${p/#\~/$HOME}"'
+  )
+  if [[ -z $dir ]]; then
+    zle reset-prompt
+    return 0
+  fi
+  zle push-line
+  BUFFER="builtin cd -- ${(q)dir/#\~/$HOME}"
+  zle accept-line
+}
+zle -N fzf-project-widget
+bindkey '^F' fzf-project-widget
+
+# cpwd: copy the current directory to the clipboard, with $HOME shown as ~
+cpwd() { print -rn -- "${PWD/#$HOME/~}" | pbcopy; }
+
+# reload: start a fresh zsh instead of re-sourcing .zshrc, which would
+# append PATH entries again and keep removed aliases/functions alive
+alias reload='exec zsh'
 eval "$(zoxide init zsh)"
 
 # #######################################################
@@ -217,18 +189,14 @@ if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook zsh)"
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # bun completions
-[ -s "/Users/alvaldes/.bun/_bun" ] && source "/Users/alvaldes/.bun/_bun"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
+# bun (BUN_INSTALL is exported in ~/.zshenv)
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # flutter
-export PATH="$PATH:/Users/alvaldes/Developer/flutter/bin"
+export PATH="$PATH:$HOME/Developer/github.com/flutter/flutter/bin"
 
 # pnpm
 export PNPM_HOME="/Users/alvaldes/Library/pnpm"
@@ -266,11 +234,6 @@ export GOOGLE_GENERATIVE_AI_API_KEY=""
 # #######################################################
 # #   CUSTOM PATHS                                       # #
 # #######################################################
-# Add custom paths
-export PATH="$HOME/.console-ninja/.bin:$PATH"
-
-PATH=~/.console-ninja/.bin:$PATH
-___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi
 alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 
 # #######################################################
@@ -301,8 +264,9 @@ export PATH="$PATH:/Users/alvaldes/.local/bin"
 export PATH=/Users/alvaldes/.opencode/bin:$PATH
 export PATH="/opt/homebrew/bin:$PATH"
 
-export PATH="$HOME/.tokenharbor/bin:$PATH" # tokenharbor cli
+# Gentle Shell: command palette (AeroSpace ocupa alt+k y alt+shift+k)
+export GENTLE_PI_COMMANDS_KEY="alt+p"
 
-# >>> tokenharbor connect >>>
-[ -f "/Users/alvaldes/.tokenharbor/env.sh" ] && . "/Users/alvaldes/.tokenharbor/env.sh"
-# <<< tokenharbor connect <<<
+# gwq: completions plus the wrapper that lets `gwq cd` / `gwq add -s` change
+# the current shell's directory (needs cd.launch_shell = false in gwq config)
+if command -v gwq >/dev/null 2>&1; then source <(gwq completion zsh); fi

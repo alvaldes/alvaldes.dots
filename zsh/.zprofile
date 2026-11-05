@@ -26,6 +26,11 @@ alias fzfnvim='nvim $(fzf --preview="bat --theme=gruvbox-dark --color=always {}"
 # vim
 alias v="nvim"
 
+# #####################################################################################
+# #   aria2c - descargar Torrents/Magnets a máxima velocidad con trackers frescos   # #
+# #####################################################################################
+alias aria2-torrent='aria2c --bt-tracker="$(curl -Ns https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | awk NF | paste -sd, -)"'
+
 # #######################################################
 # #   GIT                                                 # #
 # #######################################################
@@ -66,7 +71,7 @@ alias cl="clear"
 # #######################################################
 # history setup
 setopt SHARE_HISTORY
-HISTFILE=$HOME/.zhistory
+HISTFILE="$XDG_STATE_HOME/zsh/history"
 SAVEHIST=1000
 HISTSIZE=999
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -77,7 +82,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 # #######################################################
 # #   NVM                                                   # #
 # #######################################################
-export NVM_DIR="$HOME/.nvm"
+# NVM_DIR is exported in ~/.zshenv.
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
@@ -100,8 +105,8 @@ eval $(thefuck --alias fk)
 # #   SDKMAN                                                  # #
 # #######################################################
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# SDKMAN_DIR is exported in ~/.zshenv.
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 
 # #######################################################
