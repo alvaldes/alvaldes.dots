@@ -178,6 +178,43 @@ betterleaks, which carries the `validate` feature: it proves whether a detected
 secret is still live by making a request, instead of guessing. Install it with
 `brew install betterleaks`.
 
+## Neovim
+
+![Neovim dashboard](nvim/assets/screenshot.jpg)
+
+A from-scratch config for Neovim 0.12+, with no distribution and no plugin
+manager plugin: plugins are declared with the built-in `vim.pack` and pinned
+in `nvim/nvim-pack-lock.json`.
+
+```text
+nvim/
+├── init.lua                entry point
+├── nvim-pack-lock.json     pinned plugin revisions (vim.pack)
+├── after/lsp/              per-server LSP settings
+├── colors/                 gentleman colorscheme (Ghostty palette)
+├── assets/                 dashboard logo
+└── lua/alvaldes/
+    ├── config/             options, keymaps, autocmds, commands
+    ├── plugins/            vim.pack declarations and plugin setup
+    ├── themes/             colorscheme sources
+    └── utils/              lualine, tabline, lazygit helpers
+```
+
+- **UI:** everforest with a transparent background; every floating window
+  shares the snacks picker look (no fill, line-only border). Messages and the
+  cmdline use the built-in `ui2`.
+- **Core plugins:** snacks (picker, dashboard, notifier, lazygit), blink.cmp,
+  treesitter, conform, mason, gitsigns, oil, flash, which-key, copilot.
+- **Dashboard logo:** `assets/logo.svg` is drawn through the kitty graphics
+  protocol (Ghostty supports it) after ImageMagick rasterizes it; other
+  terminals get an ASCII fallback.
+
+On the first launch `vim.pack` installs the plugins from the lockfile and mason
+installs the language servers and formatters.
+
+`nvim-gentle/` is the previous LazyVim-based config. It stays on disk, out of
+the repository, until the migration is complete.
+
 ## Adding new configuration
 
 1. Add the file where the tool reads it, under `~/.config/<dir>`. If the tool

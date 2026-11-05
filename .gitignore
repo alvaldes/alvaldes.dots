@@ -35,6 +35,8 @@
 !/nvim/lua/**
 !/nvim/after/**
 !/nvim/colors/**
+!/nvim/assets/logo.svg
+!/nvim/assets/screenshot.jpg
 !/nvim/spell/**
 /nvim/spell/*.spl
 
