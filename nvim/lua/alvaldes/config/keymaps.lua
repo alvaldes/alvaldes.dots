@@ -72,7 +72,13 @@ keymap.set("n", "sl", "<C-w>l", { desc = "Focus window right" })
 -- Toggle inlay hints
 keymap.set("n", "<leader>i", function()
 	local filter = { bufnr = 0 }
-	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(filter), filter)
+	if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/inlayHint" }) == 0 then
+		vim.notify("No attached LSP provides inlay hints for this buffer", vim.log.levels.WARN)
+		return
+	end
+	local enabled = not vim.lsp.inlay_hint.is_enabled(filter)
+	vim.lsp.inlay_hint.enable(enabled, filter)
+	vim.notify("Inlay hints " .. (enabled and "on" or "off"))
 end, { desc = "Toggle inlay hints (buffer)" })
 
 -- Yank current file path
