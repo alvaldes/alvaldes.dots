@@ -1,0 +1,48 @@
+-- File explorer
+require("oil").setup({
+	columns = {
+		"icon",
+		{ "permissions", highlight = "Type" },
+		{ "size", highlight = "String" },
+		{ "mtime", highlight = "Keyword" },
+	},
+	keymaps = {
+		["q"] = { "actions.close", mode = "n" },
+	},
+	view_options = {
+		show_hidden = true,
+	},
+	float = {
+		border = "rounded",
+		win_options = {
+			winblend = 0,
+		},
+		max_width = 200,
+	},
+	preview_win = {
+		update_on_cursor_moved = true,
+	},
+	lsp_file_methods = {
+		enabled = true,
+		timeout_ms = 1000,
+		autosave_changes = true,
+	},
+})
+
+require("copilot").setup({
+	suggestion = {
+		auto_trigger = true,
+		keymap = {
+			accept = "<C-l>",
+			accept_word = "<M-w>",
+			accept_line = "<M-e>",
+			next = "<M-]>",
+			prev = "<M-[>",
+			dismiss = "<C-]>",
+		},
+	},
+	filetypes = {
+		markdown = true,
+		help = true,
+	},
+})

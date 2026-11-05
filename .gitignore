@@ -34,6 +34,9 @@
 !/nvim/nvim-pack-lock.json
 !/nvim/lua/**
 !/nvim/after/**
+!/nvim/colors/**
+!/nvim/spell/**
+/nvim/spell/*.spl
 
 # Terminal and window management
 !/ghostty/config
