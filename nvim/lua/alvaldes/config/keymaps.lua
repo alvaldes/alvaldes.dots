@@ -81,6 +81,13 @@ keymap.set("n", "<leader>i", function()
 	vim.notify("Inlay hints " .. (enabled and "on" or "off"))
 end, { desc = "Toggle inlay hints (buffer)" })
 
+-- Toggle diagnostics (all buffers)
+keymap.set("n", "<leader>ud", function()
+	local enabled = not vim.diagnostic.is_enabled()
+	vim.diagnostic.enable(enabled)
+	vim.notify("Diagnostics " .. (enabled and "on" or "off"))
+end, { desc = "Toggle diagnostics (global)" })
+
 -- Yank current file path
 keymap.set("n", "<leader>yf", function()
 	require("alvaldes.utils.editor").yank_relative_path_with_line()
