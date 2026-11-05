@@ -5,26 +5,17 @@ the same state.
 
 ## Layout
 
-The repository root **is** `~/.config`, and an extra `home/` directory holds the
-files that belong directly in `$HOME`.
+The repository root **is** `~/.config`. Everything follows the
+[XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/)
+layout, so `$HOME` stays clean: `install.sh` only adds the `~/.zshenv` symlink
+and an empty `~/.hushlogin` (which silences the "Last login" banner).
 
 ```text
 ~/.config/                  <- this repository
-├── home/                   -> symlinked into $HOME by install.sh
-│   ├── .zshrc  .zprofile  .zshenv        zsh
-│   ├── .profile  .bash_profile           POSIX / bash
-│   ├── .gitconfig  .gitignore_global     git
-│   ├── .tmux.conf  .p10k.zsh
-│   └── .condarc  .hushlogin
-├── templates/              secret templates, never linked
-│   ├── .wakatime.cfg.example
-│   ├── .aicommits.example
-│   └── .openvpn-connect.json.example
-├── nvim/  ghostty/  zellij/  btop/  sketchybar/  ...
-├── tmux/                   agent-state display layer for tmux
-├── agent-state/            agent-state reporter scripts
-├── mcp/                    MCP server registry
-├── scripts/                fetch-zellij-plugins.sh
+├── zsh/                    .zshenv  .zshrc  .zprofile  (ZDOTDIR)
+├── git/                    config  ignore
+├── nvim/  ghostty/  aerospace/  sketchybar/  herdr/  ...
+├── scripts/                helper scripts
 ├── .githooks/              pre-commit secret scan
 ├── .github/workflows/      CI secret scan
 ├── .betterleaks.toml       scanner config and allowlists
@@ -32,11 +23,55 @@ files that belong directly in `$HOME`.
 └── .gitignore
 ```
 
-Everything outside `home/` mirrors `~/.config/<dir>` one to one, so cloning the
+Every directory mirrors `~/.config/<dir>` one to one, so cloning the
 repository into `~/.config` puts those files in place with no extra step.
 
-`home/` holds only files that `install.sh` links. Templates and other
-non-linked references live outside it, so nothing can be linked by accident.
+### XDG layout
+
+`~/.zshenv` is the only zsh entry in `$HOME`, because zsh reads it before it
+knows where the rest lives. It is a symlink to `zsh/.zshenv`. It exports the XDG base directories and points
+`ZDOTDIR` at `~/.config/zsh`. Each tool then finds its files without a symlink:
+
+| What | Where |
+|---|---|
+| zsh config (`.zshrc`, `.zprofile`) | `~/.config/zsh/` via `ZDOTDIR` |
+| zsh history | `~/.local/state/zsh/history` via `HISTFILE` |
+| zsh completion dump | `~/.cache/zsh/zcompdump-<version>` via `compinit -d` |
+| Python REPL history (3.13+) | `~/.local/state/python_history` via `PYTHON_HISTORY` |
+| git config and global ignore | `~/.config/git/config`, `~/.config/git/ignore` (read natively) |
+| nvm, sdkman, bun, gradle, cocoapods, gems, ipython | `~/.local/share/<tool>` via `NVM_DIR`, `SDKMAN_DIR`, `BUN_INSTALL`, `GRADLE_USER_HOME`, `CP_HOME_DIR`, `GEM_HOME`, `IPYTHONDIR` |
+| npm, bun, gem, bundler, matplotlib caches | `~/.cache/<tool>` via `npm_config_cache`, `BUN_INSTALL_CACHE_DIR`, `GEM_SPEC_CACHE`, `BUNDLE_USER_CACHE`, `MPLCONFIGDIR` |
+| Jupyter config | `~/.config/jupyter` via `JUPYTER_CONFIG_DIR` |
+| Bundler config | `~/.local/share/bundle/config` via `BUNDLE_USER_CONFIG` (kept out of this public repo: it can hold gem-server credentials) |
+
+All of these are exported in `zsh/.zshenv`, so they reach every zsh, including
+non-interactive scripts. **GUI apps launched from the Dock never read it**: an
+app config that hardcodes `~/.nvm/...` or `~/.sdkman/...` breaks silently, so
+point app configs at commands on `PATH` instead.
+
+Not moved on purpose:
+
+- `~/.codex`: Codex's own `config.toml` hardcodes paths under it, the desktop
+  app does not read shell variables, and `CODEX_HOME` inside `~/.config` would
+  put `auth.json` in this public repository.
+- `~/.m2`, `~/.conda`, `~/.swiftpm`, `~/.ssh`: no supported relocation variable,
+  or managed by macOS/Xcode.
+
+Git checks `~/.gitconfig` first, so a stray file there shadows the XDG one.
+Don't recreate it.
+
+Git identity is deliberately **not** versioned. `git/config` includes
+`~/.gitconfig.local`, which you create on each machine:
+
+```ini
+[user]
+	name = <your name or handle>
+	email = <your email or GitHub noreply address>
+```
+
+Note that `git config --global` now writes to `~/.config/git/config`, which is
+tracked. Put personal or machine-specific values in `~/.gitconfig.local`
+instead.
 
 ## Install on a new machine
 
@@ -49,80 +84,30 @@ exec zsh -l
 
 `install.sh` replaces an existing `$HOME` file by moving it into
 `~/.dotfiles-backup-<timestamp>/` first, and re-running it is safe: an
-already-correct symlink is reported and skipped.
+already-correct symlink is reported and skipped. It also removes dangling
+symlinks that still point into the repository, such as `~/.zshenv` from when it
+lived in a `home/` directory.
 
-Then restore the files that are deliberately **not** versioned — see below —
-using the matching `templates/*.example` reference.
+Then create `~/.gitconfig.local` with your git identity (see
+[XDG layout](#xdg-layout)).
 
 ### After cloning
 
-This repository keeps hand-written configuration only. Some runtime assets are
-**not** duplicated here because they come from the upstream
-[Gentleman.Dots](https://github.com/Gentleman-Programming/Gentleman.Dots)
-installer. Restore them by re-running that installer, or by copying them out of
-its tree.
+This repository keeps hand-written configuration only. Plugins, themes, and
+other downloaded assets are reinstalled by the tool that owns them, not
+restored from here.
 
-- **Zellij plugins.** `zellij/config.kdl` and every `zellij/layouts/*.kdl`
-  reference `file:~/.config/zellij/plugins/{zjstatus,zellij_forgot}.wasm`. Those
-  are local `file:` paths, so Zellij does **not** fetch them and a fresh clone
-  has an empty `zellij/plugins/`. Run:
+## What is versioned, and why
 
-  ```sh
-  ~/.config/scripts/fetch-zellij-plugins.sh
-  ```
+Rule: only the configuration needed to rebuild this machine is versioned.
+`.gitignore` is a **file allowlist**: a file is published only when its exact
+path is listed there, and whole trees are allowed only for hand-written code.
+Credentials, caches, logs, and app state therefore stay out by default, without
+the repository having to name them.
 
-  The script downloads both from the upstream Gentleman.Dots repository and
-  verifies each file against a pinned SHA-256 before installing it.
-- **Neovim spelling.** Only the curated word list `nvim/spell/en.utf-8.add` is
-  versioned, because it is the one file that is genuinely personal. The base
-  dictionary `en.utf-8.spl` ships inside Neovim's own runtime, and Neovim
-  prompts to download any other missing language from
-  `https://ftp.nluug.nl/pub/vim/runtime/spell`. The large raw word lists
-  (`en_words.txt`, `es_words.txt`, `en_custom.txt`) are upstream installer
-  artifacts and are not needed at runtime.
-- **Ghostty shaders.** `ghostty/config` references exactly one,
-  `cursor_smear_gentleman.glsl`, which is tracked. The other 51 arrived as a
-  single bulk third-party download and are not versioned.
-
-## What is never versioned, and why
-
-Rule: configuration is versioned, credentials are not. Files inside this
-repository are excluded by `.gitignore`; the rest never enter it because they
-live outside the repository root. Each one has a `.example` template under
-`templates/` where the shape is worth documenting.
-
-| File | Contains | Handling |
-| --- | --- | --- |
-| `~/.wakatime.cfg` | plaintext WakaTime API key | ignored, `templates/.wakatime.cfg.example` |
-| `~/.aicommits` | plaintext OpenAI key | ignored, `templates/.aicommits.example` |
-| `~/.openvpn-connect.json` | VPN hostnames and usernames | ignored, `templates/.openvpn-connect.json.example` |
-| `~/.config/opencode/opencode.json` | private endpoints, rewritten by tokenharbor | ignored |
-| `~/.claude.json` | user id, project list, prompt history | outside the repository |
-| `~/.tokenharbor/` | the credential store itself | outside the repository |
-| `~/.config/codexbar/` | plaintext tokens | ignored |
-| `~/.config/nan/` | plaintext tokens | ignored |
-| `~/.ssh/` | private keys | outside the repository |
-| shell history (`~/.zsh_history`, `~/.bash_history`, `~/.python_history`, `~/.zhistory`) | commands, paths, pasted secrets | outside the repository |
-
-### Credential injection hazard
-
-`tokenharbor` writes API keys directly into these files:
-
-```text
-~/.claude/settings.json          ~/.codex/config.toml
-~/.config/opencode/opencode.json ~/.continue/config.json
-~/.pi/agent/models.json
-```
-
-None of them is versioned today. **Do not add any of them to this repository** —
-doing so would publish live credentials on the next commit. If one of these ever
-needs versioning, version a `.example` template and keep the real file ignored.
-
-Near-miss worth knowing: `.claude/settings.json` *is* tracked, but that is
-`~/.config/.claude/settings.json`, a repository-local Claude Code config — a
-different file, with a different inode, from the `~/.claude/settings.json` that
-tokenharbor rewrites. If `~/.claude` ever becomes a symlink into this
-repository, the next commit publishes live keys.
+Never allowlist a file that holds a credential. If a config needs a secret,
+publish a copy with placeholder values under a different name and keep the
+real file out of the allowlist.
 
 ## Secret scanning
 
@@ -141,8 +126,9 @@ betterleaks dir . -c .betterleaks.toml --redact
 ```
 
 `install.sh` points `core.hooksPath` at `.githooks/`, so a fresh clone gets the
-pre-commit hook. The hook refuses to commit when a known credential vault is
-staged, or when the staged content trips a scanner rule. Bypass one commit with
+pre-commit hook. The hook refuses to commit when a staged file is outside the
+`.gitignore` allowlist (only `git add -f` can stage one), or when the staged
+content trips a scanner rule. Bypass one commit with
 `SKIP=betterleaks git commit ...` for a confirmed false positive, then add an
 allowlist entry to `.betterleaks.toml`.
 
@@ -194,12 +180,13 @@ secret is still live by making a request, instead of guessing. Install it with
 
 ## Adding new configuration
 
-1. Add the file where the tool reads it — `home/` for `$HOME`, or the matching
-   `~/.config/<dir>` path otherwise.
+1. Add the file where the tool reads it, under `~/.config/<dir>`. If the tool
+   only looks in `$HOME`, keep the file in its tool's directory and add an entry
+   to `LINKS` in `install.sh`.
 2. Run `git status` and confirm the file is meant to be public: this repository
    is **public on GitHub**.
-3. If it contains a secret, add a `.example` template under `templates/` and an
-   ignore rule instead.
+3. Add `!/<dir>/` to the `.gitignore` allowlist; everything else stays ignored.
+   If a file in it contains a secret, add a deny rule for it instead.
 4. Keep generated files out. `git status` should show only hand-written files;
    `/tmp`-style artifacts, caches, lockfiles of downloaded binaries, and build
    output belong in `.gitignore`.
@@ -207,14 +194,3 @@ secret is still live by making a request, instead of guessing. Install it with
 ## Notes
 
 - Commit messages follow Conventional Commits.
-- Known follow-up: `tmux/scripts/` and `agent-state/scripts/` both come from the
-  external `gentle-agent-state` installer and overlap
-  (`tmux/scripts/agent-report.sh` is byte-identical to
-  `agent-state/scripts/tmux-agent-report.sh`). Deduplicating them changes live
-  tmux notifier behavior, so it is pending.
-- `~/.gitconfig` sets `core.excludesFile = ~/.gitignore_global`, so the tracked
-  `git/ignore` file is currently unused and its rule
-  (`**/.claude/settings.local.json`) is not enforced today. Kept for
-  compatibility with the Gentleman.Dots installer; wiring it up would mean
-  dropping the `core.excludesFile` line, since Git already reads
-  `$XDG_CONFIG_HOME/git/ignore` by default.

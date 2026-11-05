@@ -6,9 +6,9 @@
 # clone gets it without touching .git/hooks.
 #
 # What it does:
-#   1. Refuses to commit if a known credential-vault path is staged. Those paths
-#      are gitignored, so this only fires on a deliberate `git add -f`, and it
-#      gives a far clearer message than a generic secret warning.
+#   1. Refuses to commit a staged file that is not in the .gitignore allowlist.
+#      Only `git add -f` can stage one, so this catches force-added files
+#      without naming any sensitive path in this public repository.
 #   2. Runs betterleaks over the staged content only.
 #
 # Bypass for a confirmed false positive:
@@ -22,38 +22,34 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 
+# --- 1. Files outside the allowlist -------------------------------------------
+# `--no-index` evaluates the ignore rules even for paths already in the index,
+# which is exactly the state a force-added file is in.
+outside_allowlist="$(
+  git diff --cached --name-only --diff-filter=ACMR -z 2>/dev/null \
+    | git check-ignore --no-index -z --stdin 2>/dev/null \
+    | tr '\0' '\n' || true
+)"
+
+if [[ -n "$outside_allowlist" ]]; then
+  {
+    printf 'pre-commit blocked: staged files are not in the .gitignore allowlist.\n\n'
+    printf '%s\n' "$outside_allowlist" | sed 's/^/  /'
+    printf '\nThey can only be staged with `git add -f`. Review each one for secrets\n'
+    printf 'and machine state. To publish it, add its exact path to .gitignore;\n'
+    printf 'otherwise remove it from the index:\n'
+    printf '  git restore --staged <path>\n'
+  } >&2
+  exit 1
+fi
+
+# --- 2. Secret scan over the staged content -----------------------------------
+# SKIP only bypasses the scanner; the allowlist check above always runs.
 if [[ "${SKIP:-}" == "betterleaks" || "${SKIP:-}" == "*" ]]; then
   printf 'pre-commit: secret scan skipped (SKIP=%s)\n' "$SKIP" >&2
   exit 0
 fi
 
-# --- 1. Credential vaults -----------------------------------------------------
-# These hold literal, live credentials. They are gitignored; staging one means
-# `git add -f` was used. See the "never versioned" table in README.md.
-VAULT_PATHS='(^|/)(\.continue/|\.tokenharbor/|codexbar/|nan/|raycast/|github-copilot/)(.*)$'
-VAULT_FILES='(^|/)(\.wakatime\.cfg|\.aicommits|\.openvpn-connect\.json|\.claude\.json)$'
-
-staged_vault="$(
-  git diff --cached --name-only --diff-filter=ACMR 2>/dev/null \
-    | grep -E "$VAULT_PATHS|$VAULT_FILES" || true
-)"
-
-if [[ -n "$staged_vault" ]]; then
-  cat >&2 <<EOF
-pre-commit blocked: a credential vault is staged.
-
-$(printf '  %s\n' $staged_vault)
-
-These files contain live credentials in plaintext and must never be published.
-They are gitignored, so they can only be staged with \`git add -f\`.
-
-Remove them from the index:
-  git restore --staged <path>
-EOF
-  exit 1
-fi
-
-# --- 2. Secret scan over the staged content -----------------------------------
 if ! command -v betterleaks >/dev/null 2>&1; then
   cat >&2 <<'EOF'
 pre-commit: betterleaks is not installed, so the staged changes were NOT scanned.
