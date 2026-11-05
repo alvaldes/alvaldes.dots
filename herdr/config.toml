@@ -7,7 +7,6 @@ onboarding = false
 # Ghostty bright-black selected rows or Kanagawa's warm/yellow label text.
 name = "one-dark"
 
-auto_switch = false
 [theme.custom]
 panel_bg = "#06080f"
 # Match Pi's Gentle theme, with a muted cyan for Herdr chrome.
@@ -19,15 +18,26 @@ yellow = "#DEBA87"
 
 [ui]
 accent = "#6FA0AF"
-
 pane_gaps = false
 pane_outer_borders = false
 pane_scrollbars = false
-
+hide_tab_bar_when_single_tab = true
+tab_bar_position = "bottom"
+copy_on_select = false
 status_indicators = "dots"
+
+# Show Claude's session summary (its terminal title) under each agent
+# instead of just the agent name.
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "machine", "workspace", "tab"], ["terminal_title_stripped"]]
+
+[terminal]
+# New panes and tabs open in the focused pane's directory.
+new_cwd = "follow"
+
 [keys]
-# Match tmux/Zellij-style prefix muscle memory.
-prefix = "ctrl+a"
+# Match tmux-style prefix muscle memory.
+prefix = "ctrl+x"
 
 # Move between agents in the sidebar.
 # Avoid Herdr's built-in prefix+shift+j/k pane-swap bindings.
@@ -38,6 +48,56 @@ next_agent = "prefix+ctrl+j"
 # Use Ctrl after the prefix: Alt+number is owned by skhd/yabai spaces,
 # and Shift+number did not reach Herdr reliably in the current terminal setup.
 focus_agent = "prefix+ctrl+1..9"
+
+# Moving window
+move_tab_previous = "ctrl+shift+left"
+move_tab_next = "ctrl+shift+right"
+copy_mode = "prefix+["
+
+focus_pane_left = ["prefix+h", "ctrl+shift+h"]
+focus_pane_down = ["prefix+j", "ctrl+shift+j"]
+focus_pane_up = ["prefix+k", "ctrl+shift+k"]
+focus_pane_right = ["prefix+l", "ctrl+shift+l"]
+
+# Workspace switching
+previous_workspace = ["ctrl+shift+[", "ctrl+{"]
+next_workspace = ["ctrl+shift+]", "ctrl+}"]
+
+# Splits
+split_vertical = ["prefix+|", "prefix+%", "prefix+backslash"]
+split_horizontal = ["prefix+minus", 'prefix+"', "prefix+_"]
+
+goto = "prefix+u"
+open_notification_target = "prefix+shift+o"
+
+# Open current directory
+[[keys.command]]
+key = "prefix+o"
+type = "shell"
+command = 'open "$HERDR_ACTIVE_PANE_CWD"'
+
+# Kill all other panes in the current tab
+[[keys.command]]
+key = "prefix+e"
+type = "shell"
+command = '''herdr pane list | jq -r --arg t "$HERDR_ACTIVE_TAB_ID" --arg p "$HERDR_ACTIVE_PANE_ID" '.result.panes[] | select(.tab_id == $t and .pane_id != $p) | .pane_id' | xargs -n1 herdr pane close'''
+
+# Display lazygit
+[[keys.command]]
+key = "prefix+g"
+type = "pane"
+command = 'cd "$HERDR_ACTIVE_PANE_CWD" && lazygit'
+
+# Move the current workspace up/down in the sidebar
+[[keys.command]]
+key = "ctrl+shift+up"
+type = "shell"
+command = '"$HOME/.config/scripts/herdr-move-workspace" up'
+
+[[keys.command]]
+key = "ctrl+shift+down"
+type = "shell"
+command = '"$HOME/.config/scripts/herdr-move-workspace" down'
 
 # herdr-cliamp transport and now-playing shortcuts.
 # m, t, u, and i are letters herdr's defaults leave free.
@@ -67,11 +127,11 @@ type = "plugin_action"
 command = "herdr-cliamp.next"
 description = "cliamp: next track"
 
-[[keys.command]]
-key = "prefix+u"
-type = "plugin_action"
-command = "herdr-cliamp.prev"
-description = "cliamp: previous track"
+# [[keys.command]]
+# key = "prefix+u"
+# type = "plugin_action"
+# command = "herdr-cliamp.prev"
+# description = "cliamp: previous track"
 
 [ui.toast]
 delivery = "herdr"
