@@ -105,10 +105,12 @@ truncate_to_repo = true
 read_only = "  "
 
 [directory.substitutions]
+# Search for more in: https://www.nerdfonts.com/cheat-sheet
 "Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+"Developer" = " "
 
 [package]
 disabled = false
