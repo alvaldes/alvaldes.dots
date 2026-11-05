@@ -114,6 +114,7 @@ map({
 	{ "<leader>cl", Snacks.picker.lsp_config, desc = "Show attached LSP clients" },
 	{ "<leader>cR", Snacks.rename.rename_file, desc = "Rename file (updates imports)" },
 	{ ";f", Snacks.picker.files, desc = "Find files in project" },
+	{ "<leader><leader>", Snacks.picker.files, desc = "Find files in project" },
 	{ ";r", Snacks.picker.grep, desc = "Search text in project (grep)" },
 	{ ";;", Snacks.picker.resume, desc = "Resume last picker" },
 	{
