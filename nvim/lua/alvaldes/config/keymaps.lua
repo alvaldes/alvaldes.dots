@@ -32,6 +32,7 @@ keymap.set("n", "<C-a>", "gg<S-v>G", { desc = "Select all" })
 
 -- Save file
 keymap.set("n", "<C-s>", ":w<CR>", with_desc("Save file"))
+keymap.set("i", "<C-s>", "<Cmd>w<CR>", with_desc("Save file"))
 
 -- Disable continuations
 keymap.set("n", "<Leader>o", "o<Esc>^Da", with_desc("New line below (no comment leader)"))
@@ -87,6 +88,12 @@ keymap.set("n", "<leader>ud", function()
 	vim.diagnostic.enable(enabled)
 	vim.notify("Diagnostics " .. (enabled and "on" or "off"))
 end, { desc = "Toggle diagnostics (global)" })
+
+-- Toggle line wrap ('wrap' is window-local, so this affects the current window)
+keymap.set("n", "<leader>uw", function()
+	vim.opt_local.wrap = not vim.opt_local.wrap:get()
+	vim.notify("Wrap " .. (vim.opt_local.wrap:get() and "on" or "off"))
+end, { desc = "Toggle line wrap (window)" })
 
 -- Yank current file path
 keymap.set("n", "<leader>yf", function()
