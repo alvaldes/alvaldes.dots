@@ -3,6 +3,7 @@ prepend_keymap = [
   # ── Navigation ──
   { on = ["g", "k"], run = "cd ~/Desktop", desc = "Go to Desktop" },
   { on = ["g", "p"], run = "cd ~/Developer", desc = "Go to Projects" },
+  { on = ["g", "v"], run = "cd ~/Documents/second-brain", desc = "Go to Vault" },
 
   { on = "q", run = "quit --no-cwd-file", desc = "Quit without outputting cwd-file" },
   { on = "Q", run = "quit", desc = "Quit the process" },
