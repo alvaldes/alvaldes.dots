@@ -39,7 +39,8 @@ knows where the rest lives. It is a symlink to `zsh/.zshenv`. It exports the XDG
 | zsh completion dump | `~/.cache/zsh/zcompdump-<version>` via `compinit -d` |
 | Python REPL history (3.13+) | `~/.local/state/python_history` via `PYTHON_HISTORY` |
 | git config and global ignore | `~/.config/git/config`, `~/.config/git/ignore` (read natively) |
-| nvm, sdkman, bun, gradle, cocoapods, gems, ipython | `~/.local/share/<tool>` via `NVM_DIR`, `SDKMAN_DIR`, `BUN_INSTALL`, `GRADLE_USER_HOME`, `CP_HOME_DIR`, `GEM_HOME`, `IPYTHONDIR` |
+| mise (node, rust) | `~/.config/mise/config.toml`; installs in `~/.local/share/mise` (XDG native) |
+| sdkman, bun, gradle, cocoapods, gems, ipython | `~/.local/share/<tool>` via `SDKMAN_DIR`, `BUN_INSTALL`, `GRADLE_USER_HOME`, `CP_HOME_DIR`, `GEM_HOME`, `IPYTHONDIR` |
 | npm, bun, gem, bundler, matplotlib caches | `~/.cache/<tool>` via `npm_config_cache`, `BUN_INSTALL_CACHE_DIR`, `GEM_SPEC_CACHE`, `BUNDLE_USER_CACHE`, `MPLCONFIGDIR` |
 | Jupyter config | `~/.config/jupyter` via `JUPYTER_CONFIG_DIR` |
 | Bundler config | `~/.local/share/bundle/config` via `BUNDLE_USER_CONFIG` (kept out of this public repo: it can hold gem-server credentials) |

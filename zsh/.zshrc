@@ -180,15 +180,6 @@ function y() {
     command rm -f -- "$tmp"
 }
 
-# #######################################################
-# #   DIRENV                                             # #
-# #######################################################
-# Carga/descarga variables de entorno por directorio (.envrc).
-# Debe quedar despues del PATH definitivo para no perderlo al recargar entorno.
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
-
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
@@ -271,3 +262,13 @@ export GENTLE_PI_COMMANDS_KEY="alt+p"
 # gwq: completions plus the wrapper that lets `gwq cd` / `gwq add -s` change
 # the current shell's directory (needs cd.launch_shell = false in gwq config)
 if command -v gwq >/dev/null 2>&1; then source <(gwq completion zsh); fi
+
+# #######################################################
+# #   MISE                                               # #
+# #######################################################
+# Tool versions (node) and per-directory env vars (replaces nvm and direnv).
+# Keep it LAST: its PATH entries must win over conda init and the homebrew
+# and system prepends above, or a project env would be shadowed.
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi

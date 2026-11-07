@@ -36,7 +36,6 @@ export SHELL_SESSIONS_DISABLE=1
 # this file, so keep absolute ~/.<name> paths out of app configs.
 
 # Runtimes and version managers (data: re-installable, but slow to rebuild).
-export NVM_DIR="$XDG_DATA_HOME/nvm"
 export SDKMAN_DIR="$XDG_DATA_HOME/sdkman"
 export BUN_INSTALL="$XDG_DATA_HOME/bun"
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"

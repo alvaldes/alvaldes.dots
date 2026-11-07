@@ -85,13 +85,6 @@ setopt HIST_EXPIRE_DUPS_FIRST
 # bindkey '\e[OB' history-search-forward
 
 # #######################################################
-# #   NVM                                                   # #
-# #######################################################
-# NVM_DIR is exported in ~/.zshenv.
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# #######################################################
 # #   IDE                                                   # #
 # #######################################################
 # use idea .

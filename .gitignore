@@ -65,6 +65,7 @@
 !/fastfetch/config.jsonc
 !/fastfetch/ascii.txt
 !/gwq/config.toml
+!/mise/config.toml
 
 # Never publish OS metadata, even inside an allowed tree.
 .DS_Store

@@ -1,0 +1,13 @@
+# Global mise config: default tool versions and settings for every shell.
+# Project overrides live in each repo's mise.toml (or mise.local.toml).
+
+[tools]
+node = "24"
+rust = "stable"
+
+[settings]
+# Honor .nvmrc / .node-version in cloned projects, as nvm did.
+# package.json is excluded so its engines field never switches node silently.
+# Python is intentionally left out: conda owns Python environments.
+idiomatic_version_file_enable_tools = ["node"]
+idiomatic_version_file_disable_files = ["node:package.json"]
