@@ -234,7 +234,8 @@ export GOOGLE_GENERATIVE_AI_API_KEY=""
 # #######################################################
 # #   CUSTOM PATHS                                       # #
 # #######################################################
-alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
+# open hands the file to Launch Services, so Skim runs detached from the shell
+alias skim='open -a Skim'
 
 # #######################################################
 # #   CONDA INIT                                         # #
